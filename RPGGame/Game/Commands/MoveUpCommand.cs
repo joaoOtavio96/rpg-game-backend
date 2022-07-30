@@ -9,5 +9,8 @@
             Condition = (key) => key is Key.W || (person.LastKey is Key.W && person.DirectionLatch);
             Action = () => person.MoveUp();
         }
+
+        public string Direction { get; set; }
+        public Func<string> Animation { get; set; }
     }
 }

@@ -5,9 +5,9 @@ namespace RPGGame.Hubs
 {
     public class GameHub : Hub
     {
-        private readonly CommandProcessor _commands;
+        private readonly CommandQueue _commands;
 
-        public GameHub(CommandProcessor commands)
+        public GameHub(CommandQueue commands)
         {
             _commands = commands;
         }

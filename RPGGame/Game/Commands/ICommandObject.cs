@@ -2,7 +2,7 @@
 {
     public interface ICommandObject
     {
-        public CommandMap CommandMap { get; set; }
+        public CommandKeyMap CommandMap { get; set; }
         void OnProccessing(Command command, Action completed);
     }
 }

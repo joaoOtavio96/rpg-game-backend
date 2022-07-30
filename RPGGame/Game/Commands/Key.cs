@@ -2,7 +2,7 @@
 {
     public enum Key
     {
-        Default = -1,
+        Default,
         W,
         A,
         S,

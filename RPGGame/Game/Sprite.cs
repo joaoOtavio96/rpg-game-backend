@@ -10,12 +10,12 @@
             Y = 0;
         }
 
-        public Sprite(string path, int width, int height)
+        public Sprite(string path, int x, int y, int width, int height)
         {
             var directory = AppDomain.CurrentDomain.BaseDirectory;
             OriginalImage = File.ReadAllBytes(Path.Combine(directory, path));
-            X = 0;
-            Y = 0;
+            X = x;
+            Y = y;
             Width = width;
             Height = height;
         }

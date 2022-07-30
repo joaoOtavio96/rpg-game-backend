@@ -10,7 +10,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddHostedService<GameHostedService>();
 builder.Services.AddSingleton<IGame, Game>();
-builder.Services.AddSingleton<CommandProcessor>();
+builder.Services.AddSingleton<CommandQueue>();
 builder.Services.AddCors(c => c.AddPolicy("allow", builder =>
 {
     builder

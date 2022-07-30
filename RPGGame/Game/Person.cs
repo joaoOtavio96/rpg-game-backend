@@ -4,29 +4,22 @@ namespace RPGGame.Game
 {
     public class Person : Sprite, ICommandObject
     {
-        public Person(string path, int width, int height) : base(path, width, height)
+        public Person(string path,int x, int y, int width, int height) : base(path, x, y, width, height)
         {
             LastDirection = "Down";
             LastKey = Key.Default;
             DirectionLatch = false;
             MovementProgress = MovementConfig.MovementProgress;
             MovementLimit = MovementConfig.MovementLimit;
-            Width = width;
-            Height = height;
-            CommandMap = new CommandMap
-            {
-                Map = new Dictionary<Key, Command>
-                {
-                    { Key.W, new MoveUpCommand(this) },
-                    { Key.S, new MoveDownCommand(this) },
-                    { Key.A, new MoveLeftCommand(this) },
-                    { Key.D, new MoveRightCommand(this) },
-                    { Key.Default, new IdleCommand(this) }
-                }
-            };
+            CommandMap = new CommandKeyMap()
+                .AddMap(new KeyValuePair<Key, Command>(Key.W, new MoveUpCommand(this)))
+                .AddMap(new KeyValuePair<Key, Command>(Key.S, new MoveDownCommand(this)))
+                .AddMap(new KeyValuePair<Key, Command>(Key.A, new MoveLeftCommand(this)))
+                .AddMap(new KeyValuePair<Key, Command>(Key.D, new MoveRightCommand(this)))
+                .AddMap(new KeyValuePair<Key, Command>(Key.Default, new IdleCommand(this)));
         }
 
-        public CommandMap CommandMap { get; set; }
+        public CommandKeyMap CommandMap { get; set; }
         public double MovementLimit { get; private set; }
         public double MovementProgress { get; private set; }
         public string LastDirection { get; private set; }
@@ -86,11 +79,6 @@ namespace RPGGame.Game
             LastKey = Key.Default;
             MovementLimit = MovementConfig.MovementLimit;
             Animation.ResetFrame();
-        }
-
-        public void Idle()
-        {
-           
         }
     }
 }

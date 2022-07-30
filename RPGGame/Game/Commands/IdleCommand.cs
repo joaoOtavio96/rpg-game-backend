@@ -6,7 +6,10 @@
         {
             Animation = () => $"Idle{person.LastDirection}";
             Condition = (key) => key is Key.Default && !string.IsNullOrWhiteSpace(person.LastDirection) && !person.DirectionLatch;
-            Action = () => person.Idle();
+            Action = () => { };
         }
+
+        public string Direction { get; set; }
+        public Func<string> Animation { get; set; }
     }
 }
