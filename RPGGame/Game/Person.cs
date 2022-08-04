@@ -4,13 +4,17 @@ namespace RPGGame.Game
 {
     public class Person : Sprite, ICommandObject
     {
-        public Person(string path,int x, int y, int width, int height) : base(path, x, y, width, height)
+        public Person(string path, double x, double y, int width, int height) : base(path, x, y, width, height)
         {
             LastDirection = "Down";
             LastKey = Key.Default;
             DirectionLatch = false;
             MovementProgress = MovementConfig.MovementProgress;
             MovementLimit = MovementConfig.MovementLimit;
+            DeltaX += x;
+            DeltaY += y;
+            InitialX = x;
+            InitialY = y;
             CommandMap = new CommandKeyMap()
                 .AddMap(new KeyValuePair<Key, Command>(Key.W, new MoveUpCommand(this)))
                 .AddMap(new KeyValuePair<Key, Command>(Key.S, new MoveDownCommand(this)))
@@ -47,21 +51,25 @@ namespace RPGGame.Game
         public void MoveUp()
         {
             Y -= MovementProgress;
+            DeltaY -= MovementProgress;
         }
 
         public void MoveDown()
         {
             Y += MovementProgress;
+            DeltaY += MovementProgress;
         }
 
         public void MoveLeft()
         {
             X -= MovementProgress;
+            DeltaX -= MovementProgress;
         }
 
         public void MoveRight()
         {
             X += MovementProgress;
+            DeltaX += MovementProgress;
         }
 
         public void UpdateMovement()

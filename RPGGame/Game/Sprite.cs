@@ -6,20 +6,30 @@
         {
             var directory = AppDomain.CurrentDomain.BaseDirectory;
             OriginalImage = File.ReadAllBytes(Path.Combine(directory, path));
+            Image = OriginalImage;
             X = 0;
             Y = 0;
+            DeltaX = 0;
+            DeltaY = 0;
         }
 
-        public Sprite(string path, int x, int y, int width, int height)
+        public Sprite(string path, double x, double y, int width, int height)
         {
             var directory = AppDomain.CurrentDomain.BaseDirectory;
             OriginalImage = File.ReadAllBytes(Path.Combine(directory, path));
+            Image = OriginalImage;
             X = x;
             Y = y;
             Width = width;
             Height = height;
+            DeltaX = 0;
+            DeltaY = 0;
         }
 
+        public double InitialX { get; set; }
+        public double InitialY { get; set; }
+        public double DeltaX { get; set; }
+        public double DeltaY { get; set; }
         public double X { get; set; }
         public double Y { get; set; }
         public int Width { get; set; }
