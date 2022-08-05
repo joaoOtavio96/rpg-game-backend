@@ -4,32 +4,20 @@ namespace RPGGame.Game
 {
     public static class Camera
     {
-        public static List<GameObjectDto> SetPositions(Sprite main, List<Sprite> others)
+        public static void SetPositions(List<ICameraObject> cameraObjects)
         {
-            List<GameObjectDto> gameObjects = new List<GameObjectDto>();
+            var mainSprite = cameraObjects.Single(c => c.Main) as Sprite;
+            var otherSprites = cameraObjects.Where(c => !c.Main).Cast<Sprite>();
 
-            foreach (var other in others)
+            foreach (var other in otherSprites)
             {
-                GameObjectDto gameObject = new GameObjectDto()
-                {
-                    Sprite = other.Image,
-                    X = other.X + main.DeltaX * (-1),
-                    Y = other.Y + main.DeltaY * (-1)
-                };
+                other.RelativeX = other.X + mainSprite.DeltaX * (-1) + (GameConfig.CanvasWidth / 2);
+                other.RelativeY = other.Y + mainSprite.DeltaY * (-1) + (GameConfig.CanvasHeight / 2);
 
-                gameObjects.Add(gameObject);
             }
 
-            var mainObject = new GameObjectDto()
-            {
-                Sprite = main.Image,
-                X = (GameConfig.CanvasWidth / 2),
-                Y = (GameConfig.CanvasHeight / 2)
-            };
-
-            gameObjects.Add(mainObject);
-
-            return gameObjects;
+            mainSprite.RelativeX = (GameConfig.CanvasWidth / 2);
+            mainSprite.RelativeY = (GameConfig.CanvasHeight / 2);
         }
     }
 }

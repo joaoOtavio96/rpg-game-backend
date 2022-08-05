@@ -10,7 +10,7 @@ namespace RPGGame.Game
         private readonly CommandQueue _commands;
         private NpcCommadQueue _npcCommands;
         private Person Hero, Npc;
-        private Sprite Map;
+        private Map Map;
         private object State;
 
 
@@ -21,15 +21,11 @@ namespace RPGGame.Game
 
         public void Init()
         {
-            Map = new Sprite(@"Assets\maps\DemoLower.png", 
-                x: (GameConfig.CanvasWidth / 2) + MapConfig.ConvertToPixel(6) * (-1),
-                y: (GameConfig.CanvasHeight / 2) + MapConfig.ConvertToPixel(6) * (-1),
-                0,
-                0);
+            Map = new Map(@"Assets\maps\DemoLower.png", 0, 0, 192, 192);
+            Map.Main = false;
 
-            Hero = new Person(@"Assets\characters\people\hero.png",
-                (GameConfig.CanvasWidth / 2) + MapConfig.ConvertToPixel(6) + MapConfig.ConvertToPixel(6) * (-1) - (MapConfig.GridSize / 2),
-                (GameConfig.CanvasHeight / 2) + MapConfig.ConvertToPixel(7) + MapConfig.ConvertToPixel(7) * (-1) - (MapConfig.GridSize / 8), 32, 32);
+            Hero = new Person(@"Assets\characters\people\hero.png", 6, 7, 32, 32);
+            Hero.Main = false;
             Hero.Animation = new Animation()
                 .AddAnimation("IdleUp", new List<Point> { new Point(0, 2) })
                 .AddAnimation("IdleDown", new List<Point> { new Point(0, 0) })
@@ -40,9 +36,8 @@ namespace RPGGame.Game
                 .AddAnimation("WalkLeft", new List<Point> { new Point(0, 3), new Point(1, 3), new Point(2, 3), new Point(3, 3) })
                 .AddAnimation("WalkRight", new List<Point> { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1) });
 
-            Npc = new Person(@"Assets\characters\people\npc1.png",
-                 MapConfig.ConvertToPixel(7) + MapConfig.ConvertToPixel(6) * (-1) - (MapConfig.GridSize / 2),
-                 MapConfig.ConvertToPixel(9) + MapConfig.ConvertToPixel(7) * (-1) - (MapConfig.GridSize / 8), 32, 32);
+            Npc = new Person(@"Assets\characters\people\npc1.png", 7, 9, 32, 32);
+            Npc.Main = true;
             Npc.Animation = new Animation()
                 .AddAnimation("IdleUp", new List<Point> { new Point(0, 2) })
                 .AddAnimation("IdleDown", new List<Point> { new Point(0, 0) })
@@ -60,14 +55,31 @@ namespace RPGGame.Game
         {
             CommandProcessor.Proccess(Hero, _commands.CurrentKey, () => _commands.GetKey());
             CommandProcessor.Proccess(Npc, (Key)_npcCommands.Current, () => _npcCommands.MoveNext());
-
-            var gameObjects = Camera.SetPositions(Npc, new List<Sprite> { Map, Hero });
+            Camera.SetPositions(new List<ICameraObject> { Hero, Map, Npc });
 
             State = new
             {
-                GameObjects = gameObjects,
+                GameObjects = CreateGameObjetcs(Map, Npc, Hero),
                 CommandsPressed = _commands.KeysPressed.Count()
             };
+        }
+
+        private List<GameObjectDto> CreateGameObjetcs(params Sprite[] sprites)
+        {
+            var gameObjects = new List<GameObjectDto>();
+            foreach (var sprite in sprites)
+            {
+                var gameObject = new GameObjectDto
+                {
+                    Sprite = sprite.Image,
+                    X = sprite.RelativeX,
+                    Y = sprite.RelativeY,
+                };
+
+                gameObjects.Add(gameObject);
+            }
+
+            return gameObjects;
         }
 
         public object GetState()
