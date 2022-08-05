@@ -2,15 +2,21 @@
 
 namespace RPGGame.Game
 {
-    public class Person : Sprite, ICommandObject
+    public class Person : Sprite, ICommandObject, ICameraObject
     {
-        public Person(string path,int x, int y, int width, int height) : base(path, x, y, width, height)
+        public Person(string path, double x, double y, int width, int height) : base(path, x, y, width, height)
         {
             LastDirection = "Down";
             LastKey = Key.Default;
             DirectionLatch = false;
             MovementProgress = MovementConfig.MovementProgress;
             MovementLimit = MovementConfig.MovementLimit;
+            var calculatedX = MapConfig.ConvertToPixel(x) + MapConfig.ConvertToPixel(6) * (-1) - (MapConfig.GridSize / 2);
+            var calculatedY = MapConfig.ConvertToPixel(y) + MapConfig.ConvertToPixel(7) * (-1) - (MapConfig.GridSize / 8);
+            DeltaX += calculatedX;
+            DeltaY += calculatedY;
+            X = calculatedX;
+            Y = calculatedY;
             CommandMap = new CommandKeyMap()
                 .AddMap(new KeyValuePair<Key, Command>(Key.W, new MoveUpCommand(this)))
                 .AddMap(new KeyValuePair<Key, Command>(Key.S, new MoveDownCommand(this)))
@@ -26,6 +32,7 @@ namespace RPGGame.Game
         public Key LastKey { get; private set; }
         public bool DirectionLatch { get; private set; }
         public bool MovementCompleted => MovementLimit <= 0;
+        public bool Main { get; set; }
 
         public void OnProccessing(Command command, Action completed)
         {
@@ -47,21 +54,25 @@ namespace RPGGame.Game
         public void MoveUp()
         {
             Y -= MovementProgress;
+            DeltaY -= MovementProgress;
         }
 
         public void MoveDown()
         {
             Y += MovementProgress;
+            DeltaY += MovementProgress;
         }
 
         public void MoveLeft()
         {
             X -= MovementProgress;
+            DeltaX -= MovementProgress;
         }
 
         public void MoveRight()
         {
             X += MovementProgress;
+            DeltaX += MovementProgress;
         }
 
         public void UpdateMovement()
