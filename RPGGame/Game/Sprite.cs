@@ -2,7 +2,6 @@
 {
     public class Sprite
     {
-
         public Sprite(string name, string path, double x, double y, int width, int height)
         {
             var directory = AppDomain.CurrentDomain.BaseDirectory;
