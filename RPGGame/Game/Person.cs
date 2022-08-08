@@ -4,7 +4,7 @@ namespace RPGGame.Game
 {
     public class Person : Sprite, ICommandObject, ICameraObject
     {
-        public Person(string path, double x, double y, int width, int height) : base(path, x, y, width, height)
+        public Person(string name, string path, double x, double y, int width, int height) : base(name, path, x, y, width, height)
         {
             LastDirection = "Down";
             LastKey = Key.Default;

@@ -2,18 +2,7 @@
 {
     public class Sprite
     {
-        public Sprite(string path)
-        {
-            var directory = AppDomain.CurrentDomain.BaseDirectory;
-            OriginalImage = File.ReadAllBytes(Path.Combine(directory, path));
-            Image = OriginalImage;
-            X = 0;
-            Y = 0;
-            DeltaX = 0;
-            DeltaY = 0;
-        }
-
-        public Sprite(string path, double x, double y, int width, int height)
+        public Sprite(string name, string path, double x, double y, int width, int height)
         {
             var directory = AppDomain.CurrentDomain.BaseDirectory;
             OriginalImage = File.ReadAllBytes(Path.Combine(directory, path));
@@ -24,6 +13,7 @@
             Height = height;
             DeltaX = 0;
             DeltaY = 0;
+            Name = name;
         }
 
         public double DeltaX { get; set; }
@@ -34,6 +24,7 @@
         public double Y { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+        public string Name { get; set; }
         public byte[] OriginalImage { get; private set; }
         public byte[] Image { get; private set; }
         public Animation Animation { get; set; }

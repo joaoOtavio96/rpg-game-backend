@@ -13,7 +13,6 @@ namespace RPGGame.Game
             {
                 other.RelativeX = other.X + mainSprite.DeltaX * (-1) + (GameConfig.CanvasWidth / 2);
                 other.RelativeY = other.Y + mainSprite.DeltaY * (-1) + (GameConfig.CanvasHeight / 2);
-
             }
 
             mainSprite.RelativeX = (GameConfig.CanvasWidth / 2);
