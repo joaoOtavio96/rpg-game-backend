@@ -21,11 +21,10 @@ namespace RPGGame.Game
 
         public void Init()
         {
-            Map = new Map(@"Assets\maps\DemoLower.png", 0, 0, 192, 192);
-            Map.Main = false;
+            Map = new Map("Map", @"Assets\maps\DemoLower.png", 0, 0, 192, 192);
 
-            Hero = new Person(@"Assets\characters\people\hero.png", 6, 7, 32, 32);
-            Hero.Main = false;
+            Hero = new Person("Hero", @"Assets\characters\people\hero.png", 6, 7, 32, 32);
+            Hero.Main = true;
             Hero.Animation = new Animation()
                 .AddAnimation("IdleUp", new List<Point> { new Point(0, 2) })
                 .AddAnimation("IdleDown", new List<Point> { new Point(0, 0) })
@@ -36,8 +35,7 @@ namespace RPGGame.Game
                 .AddAnimation("WalkLeft", new List<Point> { new Point(0, 3), new Point(1, 3), new Point(2, 3), new Point(3, 3) })
                 .AddAnimation("WalkRight", new List<Point> { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1) });
 
-            Npc = new Person(@"Assets\characters\people\npc1.png", 7, 9, 32, 32);
-            Npc.Main = true;
+            Npc = new Person("Npc", @"Assets\characters\people\npc1.png", 7, 9, 32, 32);
             Npc.Animation = new Animation()
                 .AddAnimation("IdleUp", new List<Point> { new Point(0, 2) })
                 .AddAnimation("IdleDown", new List<Point> { new Point(0, 0) })
@@ -71,6 +69,7 @@ namespace RPGGame.Game
             {
                 var gameObject = new GameObjectDto
                 {
+                    Name = sprite.Name,
                     Sprite = sprite.Image,
                     X = sprite.RelativeX,
                     Y = sprite.RelativeY,
