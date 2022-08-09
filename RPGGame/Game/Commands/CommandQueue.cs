@@ -28,5 +28,10 @@
 
             CurrentKey = KeysPressed.Dequeue();
         }
+
+        public void ClearKeys()
+        {
+            KeysPressed.Clear();
+        }
     }
 }
