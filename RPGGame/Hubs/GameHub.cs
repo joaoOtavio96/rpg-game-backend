@@ -18,5 +18,12 @@ namespace RPGGame.Hubs
 
             return Task.CompletedTask;
         }
+
+        public Task KeyReleased()
+        {
+            _commands.ClearKeys();
+
+            return Task.CompletedTask;
+        }
     }
 }
