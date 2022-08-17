@@ -21,11 +21,11 @@ namespace RPGGame.Game
 
         public void Init()
         {
-            Map = new Map("Map", @"Assets\maps\DemoLower.png", 0, 0, 192, 192);
+            Map = new Map("Map", @"Assets\maps\DemoLower.png", 192, 192, 16, 16);
 
-            Hero = new Person("Hero", @"Assets\characters\people\hero.png", 6, 7, 32, 32);
+            Hero = new Person("Hero", @"Assets\characters\people\hero.png", 6, 7, 128, 128, 32, 32);
             Hero.Main = true;
-            Hero.Animation = new Animation()
+            Hero.Sprite.Animation = new Animation()
                 .AddAnimation("IdleUp", new List<Point> { new Point(0, 2) })
                 .AddAnimation("IdleDown", new List<Point> { new Point(0, 0) })
                 .AddAnimation("IdleLeft", new List<Point> { new Point(0, 3) })
@@ -35,8 +35,8 @@ namespace RPGGame.Game
                 .AddAnimation("WalkLeft", new List<Point> { new Point(0, 3), new Point(1, 3), new Point(2, 3), new Point(3, 3) })
                 .AddAnimation("WalkRight", new List<Point> { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1) });
 
-            Npc = new Person("Npc", @"Assets\characters\people\npc1.png", 7, 9, 32, 32);
-            Npc.Animation = new Animation()
+            Npc = new Person("Npc", @"Assets\characters\people\npc1.png", 7, 9, 128, 128, 32, 32);
+            Npc.Sprite.Animation = new Animation()
                 .AddAnimation("IdleUp", new List<Point> { new Point(0, 2) })
                 .AddAnimation("IdleDown", new List<Point> { new Point(0, 0) })
                 .AddAnimation("IdleLeft", new List<Point> { new Point(0, 3) })
@@ -46,13 +46,19 @@ namespace RPGGame.Game
                 .AddAnimation("WalkLeft", new List<Point> { new Point(0, 3), new Point(1, 3), new Point(2, 3), new Point(3, 3) })
                 .AddAnimation("WalkRight", new List<Point> { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1) });
 
-            _npcCommands = new NpcCommadQueue(new List<Key> { Key.D, Key.D, Key.D, Key.A, Key.A, Key.A });
+            _npcCommands = new NpcCommadQueue(new List<Key> { Key.Default });
         }
 
         public void Update(double deltaTime)
         {
-            CommandProcessor.Proccess(Hero, _commands.CurrentKey, () => _commands.GetKey());
-            CommandProcessor.Proccess(Npc, (Key)_npcCommands.Current, () => _npcCommands.MoveNext());
+            var objectsToProcess = new List<Tuple<IGameObject, Key, Action>>
+            {
+                new Tuple<IGameObject, Key, Action>(Hero, _commands.CurrentKey, () => _commands.GetKey()),
+                new Tuple<IGameObject, Key, Action>(Npc, (Key)_npcCommands.Current, () => _npcCommands.MoveNext()),
+                new Tuple<IGameObject, Key, Action>(Map, Key.Default, () => { })
+            };
+
+            CommandProcessor.Proccess(objectsToProcess);
             Camera.SetPositions(new List<ICameraObject> { Hero, Map, Npc });
 
             State = new
@@ -62,23 +68,28 @@ namespace RPGGame.Game
             };
         }
 
-        private List<GameObjectDto> CreateGameObjetcs(params Sprite[] sprites)
+        private List<GameObjectDto> CreateGameObjetcs(params IGameObject[] gameObjects)
         {
-            var gameObjects = new List<GameObjectDto>();
-            foreach (var sprite in sprites)
+            var gameObjectsDto = new List<GameObjectDto>();
+            foreach (var gameObject in gameObjects)
             {
-                var gameObject = new GameObjectDto
+                var gameObjectDto = new GameObjectDto
                 {
-                    Name = sprite.Name,
-                    Sprite = sprite.Image,
-                    X = sprite.RelativeX,
-                    Y = sprite.RelativeY,
+                    Name = gameObject.Name,
+                    Sprite = gameObject.Sprite.Image,
+                    X = gameObject.RelativeX,
+                    Y = gameObject.RelativeY,
+                    MinX = gameObject.MinX,
+                    MinY = gameObject.MinY,
+                    MaxX = gameObject.MaxX,
+                    MaxY = gameObject.MaxY,
+                    HasCollision = gameObject.HasCollision,
                 };
 
-                gameObjects.Add(gameObject);
+                gameObjectsDto.Add(gameObjectDto);
             }
 
-            return gameObjects;
+            return gameObjectsDto;
         }
 
         public object GetState()

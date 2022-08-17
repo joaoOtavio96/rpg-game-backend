@@ -6,8 +6,8 @@ namespace RPGGame.Game
     {
         public static void SetPositions(List<ICameraObject> cameraObjects)
         {
-            var mainSprite = cameraObjects.Single(c => c.Main) as Sprite;
-            var otherSprites = cameraObjects.Where(c => !c.Main).Cast<Sprite>();
+            var mainSprite = cameraObjects.Single(c => c.Main);
+            var otherSprites = cameraObjects.Where(c => !c.Main);
 
             foreach (var other in otherSprites)
             {
