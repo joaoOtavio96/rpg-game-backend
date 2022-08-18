@@ -37,7 +37,7 @@ namespace RPGGame.Game
         public double MovementProgress { get; private set; }
         public string LastDirection { get; private set; }
         public Key LastKey { get; private set; }
-        public bool DirectionLatch { get; private set; }
+        public bool DirectionLatch { get; set; }
         public bool MovementCompleted => MovementLimit <= 0;
         public bool Main { get; set; }
         public double DeltaX { get; set; }
@@ -49,10 +49,10 @@ namespace RPGGame.Game
         public Sprite Sprite { get; set; }
         public string Name { get; set; }
         public bool HasCollision { get; set; }
-        public double MinX => RelativeX + 8.5;
-        public double MaxX => MinX + MapConfig.GridSize - 1;
-        public double MinY => RelativeY + 16 + (MapConfig.GridSize / 8);
-        public double MaxY => MinY + MapConfig.GridSize - 1;
+        public double MinX => RelativeX + 10;
+        public double MaxX => MinX + MapConfig.GridSize - 7;
+        public double MinY => RelativeY + 18 + (MapConfig.GridSize / 8);
+        public double MaxY => MinY + MapConfig.GridSize - 8;
 
         public void OnProccessing(Command command, Action completed)
         {

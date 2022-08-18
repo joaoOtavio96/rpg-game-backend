@@ -18,5 +18,10 @@
         {
             return new Person { RelativeX = _person.RelativeX, RelativeY = _person.RelativeY };
         }
+
+        public override IGameObject CurrentState()
+        {
+            return _person;
+        }
     }
 }

@@ -19,15 +19,27 @@ namespace RPGGame.Game.Commands
 
                 foreach (var combination in combinations)
                 {
+                    if (objectToProccess.Item2 == Key.Default)
+                        continue;
+
                     var ob1 = (objectsToProccess.FirstOrDefault(o => o.Item1 == combination.First().Item1).Item1 as ICommandObject).CommandMap.GetCommand(objectToProccess.Item2);
                     var ob2 = (objectsToProccess.FirstOrDefault(o => o.Item1 == combination.Last().Item1).Item1 as ICommandObject).CommandMap.GetCommand(combination.Last().Item2);
 
-                    combination.First().Item1.HasCollision = Intersect(ob1.NextPosition(), ob2.NextPosition());
+                    var currentOb1 = ob1.CurrentState();
+                    var currentOb2 = ob2.CurrentState();
+
+                    if(Math.Abs(currentOb1.RelativeX - currentOb2.RelativeX) <= 16 && Math.Abs(currentOb1.RelativeY - currentOb2.RelativeY) <= 16)
+                        combination.First().Item1.HasCollision = Intersect(ob1.NextPosition(), ob2.NextPosition());
                 }
 
-                if ((objectToProccess.Item1 as ICollisionObject).HasCollision)
+                if ((objectToProccess.Item1 as ICollisionObject).HasCollision && objectToProccess.Item1.DirectionLatch)
                 {
-                    
+                    objectToProccess.Item3();
+                    continue;
+                }
+                else
+                {
+                    (objectToProccess.Item1 as ICollisionObject).HasCollision = false;
                 }
 
                 if (command.Condition(objectToProccess.Item2))

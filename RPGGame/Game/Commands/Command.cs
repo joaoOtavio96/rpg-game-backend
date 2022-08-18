@@ -7,5 +7,6 @@
         public Action Action { get; set; }
 
         public abstract IGameObject NextPosition();
+        public abstract IGameObject CurrentState();
     }
 }

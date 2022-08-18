@@ -24,7 +24,15 @@ namespace RPGGame.Game
         }
         public override IGameObject NextPosition()
         {
-            return new Person { RelativeX = _person.RelativeX - MapConfig.GridSize };
+            return new Person 
+            { 
+                RelativeY = _person.RelativeY,
+                RelativeX = _person.RelativeX - MapConfig.GridSize 
+            };
+        }
+        public override IGameObject CurrentState()
+        {
+            return _person;
         }
     }
 }
