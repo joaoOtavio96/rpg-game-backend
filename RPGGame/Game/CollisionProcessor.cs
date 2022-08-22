@@ -8,26 +8,23 @@ namespace RPGGame.Game
         public static void Process(List<ObjectToProcess> objectsToProcess)
         {
             var combinations = objectsToProcess
-                    .Where(o => o.IsCollisionObject())
+                    .Where(o => o.IsCollisionObject() || o.IsStaticCollisionObject())
                     .GetPermutations(2);
 
-            foreach (var combination in combinations)
+            foreach (var combination in combinations.Where(c => !c.First().IsStaticCollisionObject()))
             {
-                var firstCombiationObject = objectsToProcess.FirstOrDefault(o => o.CollisionObject == combination.First().CollisionObject);
+                var mainCombiationObject = objectsToProcess.FirstOrDefault(o => o.CollisionObject == combination.First().CollisionObject);
 
-                if (firstCombiationObject.Key == Key.Default)
+                if (mainCombiationObject.Key == Key.Default)
                     continue;
 
-                var secondCombiationObject = objectsToProcess.FirstOrDefault(o => o.CollisionObject == combination.Last().CollisionObject);
+                var secondaryCombiationObject = objectsToProcess.FirstOrDefault(o => o.CollisionObject == combination.Last().CollisionObject);
 
-                var ob1 = firstCombiationObject.CommandObject.CommandMap.GetCommand(firstCombiationObject.Key);
-                var ob2 = secondCombiationObject.CommandObject.CommandMap.GetCommand(secondCombiationObject.Key);
+                var mainCommand = mainCombiationObject.CommandObject.CommandMap.GetCommand(mainCombiationObject.Key);
+                var mainCurrrentState = mainCommand.CurrentState();
 
-                var currentOb1 = ob1.CurrentState();
-                var currentOb2 = ob2.CurrentState();
-
-                if (Math.Abs(currentOb1.RelativeX - currentOb2.RelativeX) <= 16 && Math.Abs(currentOb1.RelativeY - currentOb2.RelativeY) <= 16)
-                    firstCombiationObject.CollisionObject.HasCollision = Intersect(ob1.NextPosition(), ob2.NextPosition());
+                if (mainCurrrentState.IsCloseTo(secondaryCombiationObject.GameObject))
+                    mainCombiationObject.CollisionObject.HasCollision = Intersect(mainCommand.NextPosition(), secondaryCombiationObject.GameObject);
             }
         }
 

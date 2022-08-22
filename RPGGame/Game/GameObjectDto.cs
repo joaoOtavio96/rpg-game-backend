@@ -11,6 +11,7 @@
         public double MinY { get; set; }
         public double MaxY { get; set; }
         public bool HasCollision { get; set; }
+        public List<CollisionBody> CollisionBodies { get; set; }
 
     }
 }
