@@ -51,14 +51,15 @@ namespace RPGGame.Game
 
         public void Update(double deltaTime)
         {
-            var objectsToProcess = new List<Tuple<IGameObject, Key, Action>>
+            var objectsToProcess = new List<ObjectToProcess>
             {
-                new Tuple<IGameObject, Key, Action>(Hero, _commands.CurrentKey, () => _commands.GetKey()),
-                new Tuple<IGameObject, Key, Action>(Npc, (Key)_npcCommands.Current, () => _npcCommands.MoveNext()),
-                new Tuple<IGameObject, Key, Action>(Map, Key.Default, () => { })
+                new ObjectToProcess(Hero, _commands.CurrentKey, () => _commands.GetKey()),
+                new ObjectToProcess(Npc, (Key)_npcCommands.Current, () => _npcCommands.MoveNext()),
+                new ObjectToProcess(Map, Key.Default, () => { })
             };
 
-            CommandProcessor.Proccess(objectsToProcess);
+            CollisionProcessor.Process(objectsToProcess);
+            CommandProcessor.Process(objectsToProcess);
             Camera.SetPositions(new List<ICameraObject> { Hero, Map, Npc });
 
             State = new

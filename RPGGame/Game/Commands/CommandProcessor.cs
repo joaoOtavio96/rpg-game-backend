@@ -4,62 +4,36 @@ namespace RPGGame.Game.Commands
 {
     public static class CommandProcessor
     {
-
-        public static List<Command> Proccess(List<Tuple<IGameObject, Key, Action>> objectsToProccess)
+        public static List<Command> Process(List<ObjectToProcess> objectsToProcess)
         {
             var commandsProcessed = new List<Command>();
-            foreach (var objectToProccess in objectsToProccess.Where(o => o.Item1 is ICommandObject).Select(o => new Tuple<ICommandObject, Key, Action>(o.Item1 as ICommandObject, o.Item2, o.Item3)))
+
+            foreach (var objectToProccess in objectsToProcess.Where(o => o.IsCommandObject()))
             {
-                var command = objectToProccess.Item1.CommandMap.GetCommand(objectToProccess.Item2);
+                var command = objectToProccess.CommandObject.CommandMap.GetCommand(objectToProccess.Key);
 
-                var combinations = objectsToProccess
-                    .Where(o => o.Item1 is ICollisionObject)
-                    .Select(o => new Tuple<ICollisionObject, Key, Action>(o.Item1 as ICollisionObject, o.Item2, o.Item3))
-                    .GetPermutations(2);
-
-                foreach (var combination in combinations)
+                if ((objectToProccess.CollisionObject.HasCollision && objectToProccess.CommandObject.DirectionLatch))
                 {
-                    if (objectToProccess.Item2 == Key.Default)
-                        continue;
-
-                    var ob1 = (objectsToProccess.FirstOrDefault(o => o.Item1 == combination.First().Item1).Item1 as ICommandObject).CommandMap.GetCommand(objectToProccess.Item2);
-                    var ob2 = (objectsToProccess.FirstOrDefault(o => o.Item1 == combination.Last().Item1).Item1 as ICommandObject).CommandMap.GetCommand(combination.Last().Item2);
-
-                    var currentOb1 = ob1.CurrentState();
-                    var currentOb2 = ob2.CurrentState();
-
-                    if(Math.Abs(currentOb1.RelativeX - currentOb2.RelativeX) <= 16 && Math.Abs(currentOb1.RelativeY - currentOb2.RelativeY) <= 16)
-                        combination.First().Item1.HasCollision = Intersect(ob1.NextPosition(), ob2.NextPosition());
-                }
-
-                if ((objectToProccess.Item1 as ICollisionObject).HasCollision && objectToProccess.Item1.DirectionLatch)
-                {
-                    objectToProccess.Item3();
+                    objectToProccess.Completed();
                     continue;
                 }
                 else
                 {
-                    (objectToProccess.Item1 as ICollisionObject).HasCollision = false;
+                    objectToProccess.CollisionObject.HasCollision = false;
                 }
 
-                if (command.Condition(objectToProccess.Item2))
+                if (command.Condition(objectToProccess.Key))
                 {
                     command.Action();
                 }
 
-                command.KeyToProccess = objectToProccess.Item2;
-                objectToProccess.Item1.OnProccessing(command, objectToProccess.Item3);
+                command.KeyToProccess = objectToProccess.Key;
+                objectToProccess.CommandObject.OnProccessing(command, objectToProccess.Completed);
 
                 commandsProcessed.Add(command);
             }
 
             return commandsProcessed;
-        }
-
-        public static bool Intersect(IGameObject obj1, IGameObject obj2)
-        {
-            return (obj1.MinX <= obj2.MaxX && obj1.MaxX >= obj2.MinX) &&
-                    (obj1.MinY <= obj2.MaxY && obj1.MaxY >= obj2.MinY);
         }
     }
 }
