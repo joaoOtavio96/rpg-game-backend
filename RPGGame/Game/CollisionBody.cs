@@ -4,6 +4,12 @@ namespace RPGGame.Game
 {
     public class CollisionBody
     {
+        public CollisionBody()
+        {
+            Id = Guid.NewGuid().ToString().Substring(0, 5);
+        }
+
+        public string Id { get; set; }
         public double X { get; set; }
         public double Y { get; set; }
         public double RelativeX { get; set; }

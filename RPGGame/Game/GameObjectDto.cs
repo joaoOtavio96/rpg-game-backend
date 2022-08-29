@@ -19,6 +19,7 @@ namespace RPGGame.Game
 
     public class CollisionBodyDto
     {
+        public string Id { get; set; }
         public double X { get; set; }
         public double Y { get; set; }
         public double RelativeX { get; set; }

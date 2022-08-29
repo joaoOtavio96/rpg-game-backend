@@ -5,30 +5,6 @@ namespace RPGGame.Game
 {
     public static class CollisionProcessor
     {
-        //public static void Process(List<ObjectToProcess> objectsToProcess)
-        //{
-        //    var combinations = objectsToProcess
-        //            .Where(o => o.IsCollisionObject() || o.IsStaticCollisionObject())
-        //            .GetPermutations(2);
-
-
-        //    foreach (var combination in combinations.Where(c => !c.First().IsStaticCollisionObject()))
-        //    {
-        //        var mainCombiationObject = objectsToProcess.FirstOrDefault(o => o.CollisionObject == combination.First().CollisionObject);
-
-        //        if (mainCombiationObject.Key == Key.Default)
-        //            continue;
-
-        //        var secondaryCombiationObject = objectsToProcess.FirstOrDefault(o => o.CollisionObject == combination.Last().CollisionObject);
-
-        //        var mainCommand = mainCombiationObject.CommandObject.CommandMap.GetCommand(mainCombiationObject.Key);
-        //        var mainCurrrentState = mainCommand.CurrentState();
-
-        //        if (mainCurrrentState.IsCloseTo(secondaryCombiationObject.GameObject))
-        //            mainCombiationObject.CollisionObject.HasCollision = Intersect(mainCommand.NextPosition(), secondaryCombiationObject.GameObject);
-        //    }
-        //}
-
         public static void Process(List<ObjectToProcess> objectsToProcess)
         {
 
@@ -51,7 +27,9 @@ namespace RPGGame.Game
                 var mainCommand = mainCombiationObject.CommandObject.CommandMap.GetCommand(mainCombiationObject.Key);
                 var mainCurrrentState = mainCommand.CurrentState();
 
-                var closeCollisionBody = secondaryCombiationObject.GameObject.CollisionBodies.FirstOrDefault(o => mainCurrrentState.IsCloseTo(o));
+                var closeCollisionBody = secondaryCombiationObject.GameObject.CollisionBodies
+                    .FirstOrDefault(o => mainCurrrentState.IsCloseTo(o) && o.Id == combination.Last().Id);
+
                 if (closeCollisionBody != null)
                 {
                     if(Intersect(mainCommand.NextPosition(), closeCollisionBody))
