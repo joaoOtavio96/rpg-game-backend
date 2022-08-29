@@ -12,14 +12,15 @@ namespace RPGGame.Game.Commands
             {
                 var command = objectToProccess.CommandObject.CommandMap.GetCommand(objectToProccess.Key);
 
-                if ((objectToProccess.CollisionObject.HasCollision && objectToProccess.CommandObject.DirectionLatch))
+                if ((objectToProccess.CollisionObject.ObjectsWithCollision.Any() && objectToProccess.CommandObject.DirectionLatch))
                 {
                     objectToProccess.Completed();
+                    objectToProccess.CollisionObject.ObjectsWithCollision.Clear();
                     continue;
                 }
                 else
                 {
-                    objectToProccess.CollisionObject.HasCollision = false;
+                    
                 }
 
                 if (command.Condition(objectToProccess.Key))

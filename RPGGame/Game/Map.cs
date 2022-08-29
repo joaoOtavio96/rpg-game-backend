@@ -2,11 +2,12 @@
 
 namespace RPGGame.Game
 {
-    public class Map : IGameObject, ICameraObject, IStaticCollisionObject
+    public class Map : IGameObject, ICameraObject, ICollisionObject
     {
         public Map(string name, string path, int width, int height, int gridWidth, int gridHeight)
         {
             CollisionBodies = new List<CollisionBody>();
+            ObjectsWithCollision = new List<CollisionBody>();
             X = (width / 2) * (-1);
             Y = (height / 2) * (-1);
             Name = name;
@@ -16,6 +17,7 @@ namespace RPGGame.Game
         public Map()
         {
             CollisionBodies = new List<CollisionBody>();
+            ObjectsWithCollision = new List<CollisionBody>();
         }
 
         public bool Main { get; set; }
@@ -33,6 +35,7 @@ namespace RPGGame.Game
         public double MaxY => MinY + MapConfig.GridSize - 8;
         public bool HasCollision { get; set; }
         public List<CollisionBody> CollisionBodies { get; set; }
+        public List<CollisionBody> ObjectsWithCollision { get; set; }
 
         public void AddCollisionBody(double x, double y)
         {
@@ -44,6 +47,11 @@ namespace RPGGame.Game
             };
 
             CollisionBodies.Add(collisionBody);
+        }
+
+        public void UpdateColisionBody()
+        {
+            
         }
     }
 }

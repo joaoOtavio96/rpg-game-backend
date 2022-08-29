@@ -12,7 +12,7 @@
         public IGameObject GameObject { get; set; }
         public ICommandObject CommandObject => GameObject as ICommandObject;
         public ICollisionObject CollisionObject => GameObject as ICollisionObject;
-        public IStaticCollisionObject StaticCollisionObject => GameObject as IStaticCollisionObject;
+        public ICollisionObject StaticCollisionObject => GameObject as ICollisionObject;
         public ICameraObject CameraObject => GameObject as ICameraObject;
         public Key Key { get; set; }
         public Action Completed { get; set; }
@@ -29,7 +29,7 @@
 
         public bool IsStaticCollisionObject()
         {
-            return GameObject is IStaticCollisionObject;
+            return GameObject is ICollisionObject;
         }
     }
 }

@@ -17,5 +17,7 @@ namespace RPGGame.Game
         public bool HasCollision { get; set; }
         public string Name { get; set; }
         public Sprite Sprite { get; set; }
+        public List<CollisionBody> CollisionBodies { get; set; }
+        public void UpdateColisionBody();
     }
 }

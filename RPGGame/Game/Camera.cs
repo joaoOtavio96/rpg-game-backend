@@ -10,9 +10,9 @@ namespace RPGGame.Game
             var mainSprite = cameraObjects.Single(c => c.Main);
             var otherSprites = cameraObjects.Where(c => !c.Main);
 
-            foreach (var other in otherSprites.Where(o => o is IStaticCollisionObject))
+            foreach (var other in otherSprites)
             {
-                (other as IStaticCollisionObject).CollisionBodies.ForEach(b =>
+                (other as IGameObject).CollisionBodies?.ForEach(b =>
                 {
                     b.RelativeX = b.X + mainSprite.DeltaX * (-1) + (GameConfig.CanvasWidth / 2);
                     b.RelativeY = b.Y + mainSprite.DeltaY * (-1) + (GameConfig.CanvasHeight / 2);

@@ -23,7 +23,10 @@ namespace RPGGame.Game
         public void Init()
         {
             Map = new Map("Map", @"Assets\maps\DemoLower.png", 192, 192, 16, 16);
-            Map.AddCollisionBody(7, 8);
+            Map.AddCollisionBody(3, 4);
+            Map.AddCollisionBody(4, 5);
+            Map.AddCollisionBody(8, 9);
+            Map.AddCollisionBody(9, 10);
 
             Hero = new Person("Hero", @"Assets\characters\people\hero.png", 6, 7, 128, 128, 32, 32);
             Hero.Main = true;
@@ -49,16 +52,15 @@ namespace RPGGame.Game
                 .AddAnimation("WalkRight", new List<Point> { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1) });
 
             _npcCommands = new NpcCommadQueue(new List<Key> { Key.Default });
-            _collisionObjects = Map.CollisionBodies
-                .Select(b => new ObjectToProcess(new Map() { CollisionBodies = new List<CollisionBody> { b }, RelativeX = b.X, RelativeY = b.Y }, Key.Default, () => { }));
         }
 
         public void Update(double deltaTime)
         {
-            var objectsToProcess = new List<ObjectToProcess>(_collisionObjects)
+            var objectsToProcess = new List<ObjectToProcess>()
             {
                 new ObjectToProcess(Hero, _commands.CurrentKey, () => _commands.GetKey()),
                 new ObjectToProcess(Npc, (Key)_npcCommands.Current, () => _npcCommands.MoveNext()),
+                new ObjectToProcess(Map, Key.Default, () => { })
             };
 
             CollisionProcessor.Process(objectsToProcess);
@@ -88,7 +90,12 @@ namespace RPGGame.Game
                     MaxX = gameObject.MaxX,
                     MaxY = gameObject.MaxY,
                     HasCollision = gameObject.HasCollision,
-                    CollisionBodies = (gameObject as IStaticCollisionObject)?.CollisionBodies
+                    CollisionBodies = (gameObject as ICollisionObject)?.CollisionBodies.Select(c => new CollisionBodyDto
+                    {
+                        HasCollision = c.HasCollision,
+                        RelativeX = c.RelativeX,
+                        RelativeY = c.RelativeY,
+                    }).ToList()
                 };
 
                 gameObjectsDto.Add(gameObjectDto);

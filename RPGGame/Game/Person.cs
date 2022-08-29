@@ -6,10 +6,13 @@ namespace RPGGame.Game
     {
         public Person()
         {
-
+            CollisionBodies = new List<CollisionBody>();
+            ObjectsWithCollision = new List<CollisionBody>();
         }
         public Person(string name, string path, double x, double y, int width, int height, int gridWidth, int gridHeight)
         {
+            CollisionBodies = new List<CollisionBody>();
+            ObjectsWithCollision = new List<CollisionBody>();
             LastDirection = "Down";
             LastKey = Key.Default;
             DirectionLatch = false;
@@ -53,6 +56,8 @@ namespace RPGGame.Game
         public double MaxX => MinX + MapConfig.GridSize - 7;
         public double MinY => RelativeY + 18 + (MapConfig.GridSize / 8);
         public double MaxY => MinY + MapConfig.GridSize - 8;
+        public List<CollisionBody> CollisionBodies { get; set; }
+        public List<CollisionBody> ObjectsWithCollision { get; set; }
 
         public void OnProccessing(Command command, Action completed)
         {
@@ -87,6 +92,24 @@ namespace RPGGame.Game
             LastKey = Key.Default;
             MovementLimit = MovementConfig.MovementLimit;
             Sprite.Animation.ResetFrame();
+        }
+
+        public void AddCollisionBody(double x, double y)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateColisionBody()
+        {
+            CollisionBodies.Clear();
+            CollisionBodies.Add(new CollisionBody
+            {
+                GameObject = this,
+                RelativeX = RelativeX,
+                RelativeY = RelativeY,
+                X = X,
+                Y = Y
+            });
         }
     }
 }
