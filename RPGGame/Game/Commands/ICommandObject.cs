@@ -4,5 +4,6 @@
     {
         public CommandKeyMap CommandMap { get; set; }
         void OnProccessing(Command command, Action completed);
+        public bool DirectionLatch { get; set; }
     }
 }

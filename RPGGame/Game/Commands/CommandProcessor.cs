@@ -1,20 +1,40 @@
-﻿namespace RPGGame.Game.Commands
+﻿using RPGGame.Infrastructure;
+
+namespace RPGGame.Game.Commands
 {
     public static class CommandProcessor
     {
-        public static Command Proccess(ICommandObject commandObject, Key keyToProccess, Action completed)
+        public static List<Command> Process(List<ObjectToProcess> objectsToProcess)
         {
-            var command = commandObject.CommandMap.GetCommand(keyToProccess);
+            var commandsProcessed = new List<Command>();
 
-            if (command.Condition(keyToProccess))
+            foreach (var objectToProccess in objectsToProcess.Where(o => o.IsCommandObject()))
             {
-                command.Action();
+                var command = objectToProccess.CommandObject.CommandMap.GetCommand(objectToProccess.Key);
+
+                if ((objectToProccess.CollisionObject.ObjectsWithCollision.Any() && objectToProccess.CommandObject.DirectionLatch))
+                {
+                    objectToProccess.Completed();
+                    objectToProccess.CollisionObject.ObjectsWithCollision.Clear();
+                    continue;
+                }
+                else
+                {
+                    
+                }
+
+                if (command.Condition(objectToProccess.Key))
+                {
+                    command.Action();
+                }
+
+                command.KeyToProccess = objectToProccess.Key;
+                objectToProccess.CommandObject.OnProccessing(command, objectToProccess.Completed);
+
+                commandsProcessed.Add(command);
             }
 
-            command.KeyToProccess = keyToProccess;
-            commandObject.OnProccessing(command, completed);
-
-            return command;
+            return commandsProcessed;
         }
     }
 }

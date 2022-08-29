@@ -2,23 +2,13 @@
 
 namespace RPGGame.Game
 {
-    public class GameObjectDto
+    public class CollisionBody
     {
-        public string Name { get; set; }
-        public byte[] Sprite { get; set; }
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double MinX { get; set; }
-        public double MaxX { get; set; }
-        public double MinY { get; set; }
-        public double MaxY { get; set; }
-        public bool HasCollision { get; set; }
-        public List<CollisionBodyDto> CollisionBodies { get; set; }
+        public CollisionBody()
+        {
+            Id = Guid.NewGuid().ToString().Substring(0, 5);
+        }
 
-    }
-
-    public class CollisionBodyDto
-    {
         public string Id { get; set; }
         public double X { get; set; }
         public double Y { get; set; }
@@ -29,5 +19,6 @@ namespace RPGGame.Game
         public double MinY => RelativeY + 18 + (MapConfig.GridSize / 8);
         public double MaxY => MinY + MapConfig.GridSize - 8;
         public bool HasCollision { get; set; }
+        public IGameObject GameObject { get; set; }
     }
 }
