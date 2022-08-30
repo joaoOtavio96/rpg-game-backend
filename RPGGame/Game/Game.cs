@@ -122,7 +122,6 @@ namespace RPGGame.Game
                     MinY = gameObject.MinY,
                     MaxX = gameObject.MaxX,
                     MaxY = gameObject.MaxY,
-                    HasCollision = gameObject.HasCollision,
                     CollisionBodies = (gameObject as ICollisionObject)?.CollisionBodies.Select(c => new CollisionBodyDto
                     {
                         Id = c.Id,

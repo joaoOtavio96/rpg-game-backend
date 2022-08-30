@@ -4,11 +4,9 @@ namespace RPGGame.Game
 {
     public class MoveRightCommand : Command, IMovementTypeObject
     {
-        private readonly Person _person;
-
         public MoveRightCommand(Person person)
         {
-            _person = person;
+            GameObject = person;
             Direction = "Right";
             Animation = () => "WalkRight";
             Condition = (key) => key is Key.D || (person.LastKey is Key.D && person.DirectionLatch);
@@ -20,21 +18,17 @@ namespace RPGGame.Game
 
         public void MoveRight()
         {
-            _person.X += _person.MovementProgress;
-            _person.DeltaX += _person.MovementProgress;
+            GameObject.X += GameObject.MovementProgress;
+            GameObject.DeltaX += GameObject.MovementProgress;
         }
 
         public override IGameObject NextPosition()
         {
             return new Person 
             { 
-                RelativeY = _person.RelativeY,
-                RelativeX = _person.RelativeX + MapConfig.GridSize 
+                RelativeY = GameObject.RelativeY,
+                RelativeX = GameObject.RelativeX + MapConfig.GridSize 
             };
-        }
-        public override IGameObject CurrentState()
-        {
-            return _person;
         }
     }
 }

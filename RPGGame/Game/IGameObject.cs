@@ -14,10 +14,26 @@ namespace RPGGame.Game
         public double MaxX { get; }
         public double MinY { get; }
         public double MaxY { get; }
-        public bool HasCollision { get; set; }
         public string Name { get; set; }
         public Sprite Sprite { get; set; }
-        public List<CollisionBody> CollisionBodies { get; set; }
+
+        // Collision
+        public void AddCollisionBody(double x, double y);
         public void UpdateColisionBody();
+        public List<CollisionBody> ObjectsWithCollision { get; set; }
+        public List<CollisionBody> CollisionBodies { get; set; }
+
+        // Command
+        public double MovementLimit { get; set; }
+        public double MovementProgress { get; set; }
+        public string LastDirection { get; set; }
+        public Key LastKey { get; set; }
+        public bool MovementCompleted => MovementLimit <= 0;
+        public CommandKeyMap CommandMap { get; set; }
+        void OnProccessing(Command command, Action completed);
+        public bool DirectionLatch { get; set; }
+
+        // Camera
+        public bool Main { get; set; }
     }
 }

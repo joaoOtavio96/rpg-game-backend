@@ -4,10 +4,9 @@ namespace RPGGame.Game
 {
     public class MoveLeftCommand : Command, IMovementTypeObject
     {
-        private readonly Person _person;
         public MoveLeftCommand(Person person)
         {
-            _person = person;
+            GameObject = person;
             Direction = "Left";
             Animation = () => "WalkLeft";
             Condition = (key) => key is Key.A || (person.LastKey is Key.A && person.DirectionLatch);
@@ -19,20 +18,16 @@ namespace RPGGame.Game
 
         public void MoveLeft()
         {
-            _person.X -= _person.MovementProgress;
-            _person.DeltaX -= _person.MovementProgress;
+            GameObject.X -= GameObject.MovementProgress;
+            GameObject.DeltaX -= GameObject.MovementProgress;
         }
         public override IGameObject NextPosition()
         {
             return new Person 
             { 
-                RelativeY = _person.RelativeY,
-                RelativeX = _person.RelativeX - MapConfig.GridSize 
+                RelativeY = GameObject.RelativeY,
+                RelativeX = GameObject.RelativeX - MapConfig.GridSize 
             };
-        }
-        public override IGameObject CurrentState()
-        {
-            return _person;
         }
     }
 }

@@ -36,6 +36,12 @@ namespace RPGGame.Game
         public bool HasCollision { get; set; }
         public List<CollisionBody> CollisionBodies { get; set; }
         public List<CollisionBody> ObjectsWithCollision { get; set; }
+        public CommandKeyMap CommandMap { get; set; }
+        public bool DirectionLatch { get; set; }
+        public double MovementLimit { get; set; }
+        public double MovementProgress { get; set; }
+        public string LastDirection { get; set; }
+        public Key LastKey { get; set; }
 
         public void AddCollisionBody(double x, double y)
         {
@@ -52,6 +58,11 @@ namespace RPGGame.Game
         public void UpdateColisionBody()
         {
             
+        }
+
+        public void OnProccessing(Command command, Action completed)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -4,11 +4,9 @@ namespace RPGGame.Game
 {
     public class MoveDownCommand : Command, IMovementTypeObject
     {
-        private readonly Person _person;
-
         public MoveDownCommand(Person person)
         {
-            _person = person;
+            GameObject = person;
             Direction = "Down";
             Animation = () => "WalkDown";
             Condition = (key) => key is Key.S || (person.LastKey is Key.S && person.DirectionLatch);
@@ -20,21 +18,17 @@ namespace RPGGame.Game
 
         public void MoveDown()
         {
-            _person.Y += _person.MovementProgress;
-            _person.DeltaY += _person.MovementProgress;
+            GameObject.Y += GameObject.MovementProgress;
+            GameObject.DeltaY += GameObject.MovementProgress;
         }
 
         public override IGameObject NextPosition()
         {
             return new Person 
             { 
-                RelativeX = _person.RelativeX,
-                RelativeY = _person.RelativeY + MapConfig.GridSize 
+                RelativeX = GameObject.RelativeX,
+                RelativeY = GameObject.RelativeY + MapConfig.GridSize 
             };
-        }
-        public override IGameObject CurrentState()
-        {
-            return _person;
         }
     }
 }

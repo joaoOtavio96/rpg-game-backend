@@ -4,10 +4,9 @@ namespace RPGGame.Game
 {
     public class MoveUpCommand : Command, IMovementTypeObject
     {
-        private readonly Person _person;
         public MoveUpCommand(Person person)
         {
-            _person = person;
+            GameObject = person;
             Direction = "Up";
             Animation = () => "WalkUp";
             Condition = (key) => key is Key.W || (person.LastKey is Key.W && person.DirectionLatch);
@@ -19,22 +18,17 @@ namespace RPGGame.Game
 
         public void MoveUp()
         {
-            _person.Y -= _person.MovementProgress;
-            _person.DeltaY -= _person.MovementProgress;
+            GameObject.Y -= GameObject.MovementProgress;
+            GameObject.DeltaY -= GameObject.MovementProgress;
         }
 
         public override IGameObject NextPosition()
         {
             return new Person 
             { 
-                RelativeX = _person.RelativeX,
-                RelativeY = _person.RelativeY - MapConfig.GridSize 
+                RelativeX = GameObject.RelativeX,
+                RelativeY = GameObject.RelativeY - MapConfig.GridSize 
             };
-        }
-
-        public override IGameObject CurrentState()
-        {
-            return _person;
         }
     }
 }

@@ -36,10 +36,10 @@ namespace RPGGame.Game
         }
 
         public CommandKeyMap CommandMap { get; set; }
-        public double MovementLimit { get; private set; }
-        public double MovementProgress { get; private set; }
-        public string LastDirection { get; private set; }
-        public Key LastKey { get; private set; }
+        public double MovementLimit { get; set; }
+        public double MovementProgress { get; set; }
+        public string LastDirection { get; set; }
+        public Key LastKey { get; set; }
         public bool DirectionLatch { get; set; }
         public bool MovementCompleted => MovementLimit <= 0;
         public bool Main { get; set; }

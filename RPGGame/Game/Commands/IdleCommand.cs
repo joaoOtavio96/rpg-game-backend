@@ -2,10 +2,9 @@
 {
     public class IdleCommand : Command, IMovementTypeObject
     {
-        private readonly Person _person;
         public IdleCommand(Person person)
         {
-            _person = person;
+            GameObject = person;
             Animation = () => $"Idle{person.LastDirection}";
             Condition = (key) => key is Key.Default && !string.IsNullOrWhiteSpace(person.LastDirection) && !person.DirectionLatch;
             Action = () => { };
@@ -16,12 +15,7 @@
 
         public override IGameObject NextPosition()
         {
-            return new Person { RelativeX = _person.RelativeX, RelativeY = _person.RelativeY };
-        }
-
-        public override IGameObject CurrentState()
-        {
-            return _person;
+            return new Person { RelativeX = GameObject.RelativeX, RelativeY = GameObject.RelativeY };
         }
     }
 }
