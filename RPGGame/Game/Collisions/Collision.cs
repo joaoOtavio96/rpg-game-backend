@@ -1,6 +1,6 @@
 ﻿using RPGGame.Config;
 
-namespace RPGGame.Game
+namespace RPGGame.Game.Collisions
 {
     public class Collision
     {
@@ -30,8 +30,8 @@ namespace RPGGame.Game
             var collisionBody = new CollisionBody
             {
                 GameObject = _gameObject,
-                X = MapConfig.ConvertToPixel(x) + MapConfig.ConvertToPixel(6) * (-1) - (MapConfig.GridSize / 2),
-                Y = MapConfig.ConvertToPixel(y) + MapConfig.ConvertToPixel(7) * (-1) - (MapConfig.GridSize / 8),
+                X = MapConfig.ConvertToPixel(x) + MapConfig.ConvertToPixel(6) * -1 - MapConfig.GridSize / 2,
+                Y = MapConfig.ConvertToPixel(y) + MapConfig.ConvertToPixel(7) * -1 - MapConfig.GridSize / 8,
             };
 
             CollisionBodies.Add(collisionBody);

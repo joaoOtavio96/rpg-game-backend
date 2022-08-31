@@ -1,16 +1,16 @@
 ﻿using RPGGame.Game.Commands;
 using RPGGame.Infrastructure;
 
-namespace RPGGame.Game
+namespace RPGGame.Game.Collisions
 {
-    public static class CollisionProcessor
+    public static class CollisionService
     {
-        public static void Process(List<ObjectToProcess> objectsToProcess)
+        public static void CheckCollision(List<ObjectToProcess> objectsToProcess)
         {
             foreach (var movingObjects in objectsToProcess.Where(o => !o.GameObject.Collision.Static))
             {
                 movingObjects.GameObject.Collision.UpdateColisionBodyPosition();
-            }               
+            }
 
             var combinations = objectsToProcess
                     .SelectMany(o => o.GameObject.Collision.CollisionBodies)
@@ -24,22 +24,22 @@ namespace RPGGame.Game
                 if (mainCombiationObject.Key == Key.Default)
                     continue;
 
-                var mainCommand = mainCombiationObject.GameObject.Command.CommandMap.GetCommand(mainCombiationObject.Key);           
+                var mainCommand = mainCombiationObject.GameObject.Command.CommandMap.GetCommand(mainCombiationObject.Key);
 
                 if (mainCommand.GameObject.IsCloseTo(secondaryCombination))
                 {
-                    if(Intersect(mainCommand.NextPosition(), secondaryCombination))
+                    if (Intersect(mainCommand.NextPosition(), secondaryCombination))
                     {
                         mainCombiationObject.GameObject.Collision.ObjectsWithCollision.Add(secondaryCombination);
                     }
-                }                   
+                }
             }
         }
 
         private static bool Intersect(IGameObject obj1, CollisionBody obj2)
         {
-            return (obj1.MinX <= obj2.MaxX && obj1.MaxX >= obj2.MinX) &&
-                    (obj1.MinY <= obj2.MaxY && obj1.MaxY >= obj2.MinY);
+            return obj1.MinX <= obj2.MaxX && obj1.MaxX >= obj2.MinX &&
+                    obj1.MinY <= obj2.MaxY && obj1.MaxY >= obj2.MinY;
         }
     }
 }

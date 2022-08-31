@@ -1,4 +1,6 @@
 ﻿using RPGGame.Config;
+using RPGGame.Game.Cameras;
+using RPGGame.Game.Collisions;
 using RPGGame.Game.Commands;
 using RPGGame.Infrastructure;
 using SixLabors.ImageSharp;
@@ -11,9 +13,7 @@ namespace RPGGame.Game
         private NpcCommadQueue _npcCommands;
         private Person Hero, Npc;
         private Map Map;
-        private IEnumerable<ObjectToProcess> _collisionObjects;
         private object State;
-
 
         public Game(CommandQueue commands)
         {
@@ -62,7 +62,7 @@ namespace RPGGame.Game
             Map.Collision.AddCollisionBody(8, 7);
 
             Hero = new Person("Hero", @"Assets\characters\people\hero.png", 6, 7, 128, 128, 32, 32);
-            Hero.Main = true;
+            Hero.Camera.Main = true;
             Hero.Sprite.Animation = new Animation()
                 .AddAnimation("IdleUp", new List<Point> { new Point(0, 2) })
                 .AddAnimation("IdleDown", new List<Point> { new Point(0, 0) })
@@ -96,9 +96,9 @@ namespace RPGGame.Game
                 new ObjectToProcess(Map, Key.Default, () => { })
             };
 
-            CollisionProcessor.Process(objectsToProcess);
-            CommandProcessor.Process(objectsToProcess);
-            Camera.SetPositions(objectsToProcess);
+            CollisionService.CheckCollision(objectsToProcess);
+            CommandService.ExecuteCommand(objectsToProcess);
+            CameraService.SetPositions(objectsToProcess);
 
             State = new
             {

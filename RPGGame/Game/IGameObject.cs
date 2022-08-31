@@ -1,4 +1,6 @@
 ﻿using RPGGame.Config;
+using RPGGame.Game.Cameras;
+using RPGGame.Game.Collisions;
 using RPGGame.Game.Commands;
 
 namespace RPGGame.Game
@@ -19,8 +21,6 @@ namespace RPGGame.Game
         public Sprite Sprite { get; set; }
         public Collision Collision { get; set; }
         public Command Command { get; set; }
-
-        // Camera
-        public bool Main { get; set; }
+        public Camera Camera { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using RPGGame.Config;
 
-namespace RPGGame.Game
+namespace RPGGame.Game.Collisions
 {
     public class CollisionBody
     {
@@ -16,7 +16,7 @@ namespace RPGGame.Game
         public double RelativeY { get; set; }
         public double MinX => RelativeX + 10;
         public double MaxX => MinX + MapConfig.GridSize - 7;
-        public double MinY => RelativeY + 18 + (MapConfig.GridSize / 8);
+        public double MinY => RelativeY + 18 + MapConfig.GridSize / 8;
         public double MaxY => MinY + MapConfig.GridSize - 8;
         public bool HasCollision { get; set; }
         public IGameObject GameObject { get; set; }

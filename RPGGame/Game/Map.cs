@@ -1,4 +1,6 @@
 ﻿using RPGGame.Config;
+using RPGGame.Game.Cameras;
+using RPGGame.Game.Collisions;
 using RPGGame.Game.Commands;
 
 namespace RPGGame.Game
@@ -13,6 +15,7 @@ namespace RPGGame.Game
             Sprite = new Sprite(path, width, height, gridWidth, gridHeight);
             Collision = new Collision(this);
             Collision.Static = true;
+            Camera = new Camera(this);
         }
 
         public bool Main { get; set; }
@@ -23,12 +26,13 @@ namespace RPGGame.Game
         public double X { get; set; }
         public double Y { get; set; }
         public string Name { get; set; }
-        public Sprite Sprite { get; set; }
         public double MinX => RelativeX + 10;
         public double MaxX => MinX + MapConfig.GridSize - 7;
         public double MinY => RelativeY + 18 + (MapConfig.GridSize / 8);
         public double MaxY => MinY + MapConfig.GridSize - 8;
+        public Sprite Sprite { get; set; }
         public Collision Collision { get; set; }
         public Command Command { get; set; }
+        public Camera Camera { get; set; }
     }
 }
