@@ -18,15 +18,18 @@ namespace RPGGame.Game
 
         public void MoveLeft()
         {
-            GameObject.X -= GameObject.Command.MovementProgress;
-            GameObject.DeltaX -= GameObject.Command.MovementProgress;
+            GameObject.Position.X -= GameObject.Command.MovementProgress;
+            GameObject.Position.DeltaX -= GameObject.Command.MovementProgress;
         }
         public override IGameObject NextPosition()
         {
             return new Person 
             { 
-                RelativeY = GameObject.RelativeY,
-                RelativeX = GameObject.RelativeX - MapConfig.GridSize 
+                Position = new Position
+                {
+                    RelativeY = GameObject.Position.RelativeY,
+                    RelativeX = GameObject.Position.RelativeX - MapConfig.GridSize
+                }              
             };
         }
     }

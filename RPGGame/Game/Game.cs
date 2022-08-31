@@ -116,8 +116,8 @@ namespace RPGGame.Game
                 {
                     Name = gameObject.Name,
                     Sprite = gameObject.Sprite.Image,
-                    X = gameObject.RelativeX,
-                    Y = gameObject.RelativeY,
+                    X = gameObject.Position.RelativeX,
+                    Y = gameObject.Position.RelativeY,
                     MinX = gameObject.MinX,
                     MinY = gameObject.MinY,
                     MaxX = gameObject.MaxX,

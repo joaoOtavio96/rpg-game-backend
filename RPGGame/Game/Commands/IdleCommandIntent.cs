@@ -1,6 +1,6 @@
-﻿namespace RPGGame.Game
+﻿namespace RPGGame.Game.Commands
 {
-    public class IdleCommandIntent: CommandIntent, IMovementTypeObject
+    public class IdleCommandIntent : CommandIntent, IMovementTypeObject
     {
         public IdleCommandIntent(IGameObject gameObject)
         {
@@ -15,7 +15,14 @@
 
         public override IGameObject NextPosition()
         {
-            return new Person { RelativeX = GameObject.RelativeX, RelativeY = GameObject.RelativeY };
+            return new Person
+            {
+                Position = new Position 
+                { 
+                    RelativeX = GameObject.Position.RelativeX, 
+                    RelativeY = GameObject.Position.RelativeY 
+                }
+            };
         }
     }
 }

@@ -14,19 +14,19 @@ namespace RPGGame.Game.Cameras
             {
                 other.GameObject.Collision.CollisionBodies?.ForEach(b =>
                 {
-                    b.RelativeX = b.X + mainSprite.GameObject.DeltaX * -1 + GameConfig.CanvasWidth / 2;
-                    b.RelativeY = b.Y + mainSprite.GameObject.DeltaY * -1 + GameConfig.CanvasHeight / 2;
+                    b.RelativeX = b.X + mainSprite.GameObject.Position.DeltaX * -1 + GameConfig.CanvasWidth / 2;
+                    b.RelativeY = b.Y + mainSprite.GameObject.Position.DeltaY * -1 + GameConfig.CanvasHeight / 2;
                 });
             }
 
             foreach (var other in otherSprites)
             {
-                other.GameObject.RelativeX = other.GameObject.X + mainSprite.GameObject.DeltaX * -1 + GameConfig.CanvasWidth / 2;
-                other.GameObject.RelativeY = other.GameObject.Y + mainSprite.GameObject.DeltaY * -1 + GameConfig.CanvasHeight / 2;
+                other.GameObject.Position.RelativeX = other.GameObject.Position.X + mainSprite.GameObject.Position.DeltaX * -1 + GameConfig.CanvasWidth / 2;
+                other.GameObject.Position.RelativeY = other.GameObject.Position.Y + mainSprite.GameObject.Position.DeltaY * -1 + GameConfig.CanvasHeight / 2;
             }
 
-            mainSprite.GameObject.RelativeX = GameConfig.CanvasWidth / 2;
-            mainSprite.GameObject.RelativeY = GameConfig.CanvasHeight / 2;
+            mainSprite.GameObject.Position.RelativeX = GameConfig.CanvasWidth / 2;
+            mainSprite.GameObject.Position.RelativeY = GameConfig.CanvasHeight / 2;
         }
     }
 }

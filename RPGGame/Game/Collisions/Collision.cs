@@ -18,10 +18,10 @@ namespace RPGGame.Game.Collisions
             CollisionBodies.Add(new CollisionBody
             {
                 GameObject = _gameObject,
-                RelativeX = _gameObject.RelativeX,
-                RelativeY = _gameObject.RelativeY,
-                X = _gameObject.X,
-                Y = _gameObject.Y
+                RelativeX = _gameObject.Position.RelativeX,
+                RelativeY = _gameObject.Position.RelativeY,
+                X = _gameObject.Position.X,
+                Y = _gameObject.Position.Y
             });
         }
 
