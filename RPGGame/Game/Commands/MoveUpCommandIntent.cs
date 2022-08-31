@@ -2,14 +2,14 @@
 
 namespace RPGGame.Game
 {
-    public class MoveUpCommand : Command, IMovementTypeObject
+    public class MoveUpCommandIntent : CommandIntent, IMovementTypeObject
     {
-        public MoveUpCommand(Person person)
+        public MoveUpCommandIntent(IGameObject gameObject)
         {
-            GameObject = person;
+            GameObject = gameObject;
             Direction = "Up";
             Animation = () => "WalkUp";
-            Condition = (key) => key is Key.W || (person.LastKey is Key.W && person.DirectionLatch);
+            Condition = (key) => key is Key.W || (gameObject.Command.LastKey is Key.W && gameObject.Command.DirectionLatch);
             Action = () => MoveUp();
         }
 
@@ -18,8 +18,8 @@ namespace RPGGame.Game
 
         public void MoveUp()
         {
-            GameObject.Y -= GameObject.MovementProgress;
-            GameObject.DeltaY -= GameObject.MovementProgress;
+            GameObject.Y -= GameObject.Command.MovementProgress;
+            GameObject.DeltaY -= GameObject.Command.MovementProgress;
         }
 
         public override IGameObject NextPosition()

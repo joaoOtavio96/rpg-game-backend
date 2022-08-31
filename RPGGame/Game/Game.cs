@@ -23,43 +23,43 @@ namespace RPGGame.Game
         public void Init()
         {
             Map = new Map("Map", @"Assets\maps\DemoLower.png", 192, 192, 16, 16);
-            Map.AddCollisionBody(1, 3);
-            Map.AddCollisionBody(2, 3);
-            Map.AddCollisionBody(3, 3);
-            Map.AddCollisionBody(4, 3);
-            Map.AddCollisionBody(5, 3);
-            Map.AddCollisionBody(6, 4); 
-            Map.AddCollisionBody(7, 3);
-            Map.AddCollisionBody(8, 4);
-            Map.AddCollisionBody(9, 3);
-            Map.AddCollisionBody(10, 3);
-            Map.AddCollisionBody(11, 4);
-            Map.AddCollisionBody(11, 5);
-            Map.AddCollisionBody(11, 6);
-            Map.AddCollisionBody(11, 7);
-            Map.AddCollisionBody(11, 8);
-            Map.AddCollisionBody(11, 9);
-            Map.AddCollisionBody(10, 10);
-            Map.AddCollisionBody(9, 10);
-            Map.AddCollisionBody(8, 10);
-            Map.AddCollisionBody(7, 10);
-            Map.AddCollisionBody(6, 10);
-            Map.AddCollisionBody(5, 11);
-            Map.AddCollisionBody(4, 10);
-            Map.AddCollisionBody(3, 10);
-            Map.AddCollisionBody(2, 10);
-            Map.AddCollisionBody(1, 10);
-            Map.AddCollisionBody(0, 9);
-            Map.AddCollisionBody(0, 8);
-            Map.AddCollisionBody(0, 7);
-            Map.AddCollisionBody(0, 6);
-            Map.AddCollisionBody(0, 5);
-            Map.AddCollisionBody(0, 4);
-            Map.AddCollisionBody(0, 3);
-            Map.AddCollisionBody(7, 6);
-            Map.AddCollisionBody(8, 6);
-            Map.AddCollisionBody(7, 7);
-            Map.AddCollisionBody(8, 7);
+            Map.Collision.AddCollisionBody(1, 3);
+            Map.Collision.AddCollisionBody(2, 3);
+            Map.Collision.AddCollisionBody(3, 3);
+            Map.Collision.AddCollisionBody(4, 3);
+            Map.Collision.AddCollisionBody(5, 3);
+            Map.Collision.AddCollisionBody(6, 4); 
+            Map.Collision.AddCollisionBody(7, 3);
+            Map.Collision.AddCollisionBody(8, 4);
+            Map.Collision.AddCollisionBody(9, 3);
+            Map.Collision.AddCollisionBody(10, 3);
+            Map.Collision.AddCollisionBody(11, 4);
+            Map.Collision.AddCollisionBody(11, 5);
+            Map.Collision.AddCollisionBody(11, 6);
+            Map.Collision.AddCollisionBody(11, 7);
+            Map.Collision.AddCollisionBody(11, 8);
+            Map.Collision.AddCollisionBody(11, 9);
+            Map.Collision.AddCollisionBody(10, 10);
+            Map.Collision.AddCollisionBody(9, 10);
+            Map.Collision.AddCollisionBody(8, 10);
+            Map.Collision.AddCollisionBody(7, 10);
+            Map.Collision.AddCollisionBody(6, 10);
+            Map.Collision.AddCollisionBody(5, 11);
+            Map.Collision.AddCollisionBody(4, 10);
+            Map.Collision.AddCollisionBody(3, 10);
+            Map.Collision.AddCollisionBody(2, 10);
+            Map.Collision.AddCollisionBody(1, 10);
+            Map.Collision.AddCollisionBody(0, 9);
+            Map.Collision.AddCollisionBody(0, 8);
+            Map.Collision.AddCollisionBody(0, 7);
+            Map.Collision.AddCollisionBody(0, 6);
+            Map.Collision.AddCollisionBody(0, 5);
+            Map.Collision.AddCollisionBody(0, 4);
+            Map.Collision.AddCollisionBody(0, 3);
+            Map.Collision.AddCollisionBody(7, 6);
+            Map.Collision.AddCollisionBody(8, 6);
+            Map.Collision.AddCollisionBody(7, 7);
+            Map.Collision.AddCollisionBody(8, 7);
 
             Hero = new Person("Hero", @"Assets\characters\people\hero.png", 6, 7, 128, 128, 32, 32);
             Hero.Main = true;
@@ -98,7 +98,7 @@ namespace RPGGame.Game
 
             CollisionProcessor.Process(objectsToProcess);
             CommandProcessor.Process(objectsToProcess);
-            Camera.SetPositions(new List<ICameraObject> { Hero, Map, Npc });
+            Camera.SetPositions(objectsToProcess);
 
             State = new
             {
@@ -122,7 +122,7 @@ namespace RPGGame.Game
                     MinY = gameObject.MinY,
                     MaxX = gameObject.MaxX,
                     MaxY = gameObject.MaxY,
-                    CollisionBodies = (gameObject as ICollisionObject)?.CollisionBodies.Select(c => new CollisionBodyDto
+                    CollisionBodies = gameObject.Collision.CollisionBodies.Select(c => new CollisionBodyDto
                     {
                         Id = c.Id,
                         HasCollision = c.HasCollision,

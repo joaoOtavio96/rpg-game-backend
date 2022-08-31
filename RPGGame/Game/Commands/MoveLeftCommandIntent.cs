@@ -2,14 +2,14 @@
 
 namespace RPGGame.Game
 {
-    public class MoveLeftCommand : Command, IMovementTypeObject
+    public class MoveLeftCommandIntent : CommandIntent, IMovementTypeObject
     {
-        public MoveLeftCommand(Person person)
+        public MoveLeftCommandIntent(IGameObject gameObject)
         {
-            GameObject = person;
+            GameObject = gameObject;
             Direction = "Left";
             Animation = () => "WalkLeft";
-            Condition = (key) => key is Key.A || (person.LastKey is Key.A && person.DirectionLatch);
+            Condition = (key) => key is Key.A || (gameObject.Command.LastKey is Key.A && gameObject.Command.DirectionLatch);
             Action = () => MoveLeft();
         }
 
@@ -18,8 +18,8 @@ namespace RPGGame.Game
 
         public void MoveLeft()
         {
-            GameObject.X -= GameObject.MovementProgress;
-            GameObject.DeltaX -= GameObject.MovementProgress;
+            GameObject.X -= GameObject.Command.MovementProgress;
+            GameObject.DeltaX -= GameObject.Command.MovementProgress;
         }
         public override IGameObject NextPosition()
         {

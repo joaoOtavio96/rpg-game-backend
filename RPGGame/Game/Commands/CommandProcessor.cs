@@ -4,21 +4,21 @@ namespace RPGGame.Game.Commands
 {
     public static class CommandProcessor
     {
-        public static List<Command> Process(List<ObjectToProcess> objectsToProcess)
+        public static List<CommandIntent> Process(List<ObjectToProcess> objectsToProcess)
         {
-            var commandsProcessed = new List<Command>();
+            var commandsProcessed = new List<CommandIntent>();
 
             foreach (var objectToProccess in objectsToProcess)
             {
-                var command = objectToProccess.GameObject.CommandMap?.GetCommand(objectToProccess.Key);
+                var command = objectToProccess.GameObject.Command?.CommandMap?.GetCommand(objectToProccess.Key);
                 
                 if (command is null)
                     continue;   
 
-                if ((objectToProccess.GameObject.ObjectsWithCollision.Any() && objectToProccess.GameObject.DirectionLatch))
+                if ((objectToProccess.GameObject.Collision.ObjectsWithCollision.Any() && objectToProccess.GameObject.Command.DirectionLatch))
                 {
                     objectToProccess.Completed();
-                    objectToProccess.GameObject.ObjectsWithCollision.Clear();
+                    objectToProccess.GameObject.Collision.ObjectsWithCollision.Clear();
                     continue;
                 }
 
@@ -28,7 +28,7 @@ namespace RPGGame.Game.Commands
                 }
 
                 command.KeyToProccess = objectToProccess.Key;
-                objectToProccess.GameObject.OnProccessing(command, objectToProccess.Completed);
+                objectToProccess.GameObject.Command.OnProccessing(command, objectToProccess.Completed);
 
                 commandsProcessed.Add(command);
             }

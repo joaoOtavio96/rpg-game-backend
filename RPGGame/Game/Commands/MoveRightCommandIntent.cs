@@ -2,14 +2,14 @@
 
 namespace RPGGame.Game
 {
-    public class MoveRightCommand : Command, IMovementTypeObject
+    public class MoveRightCommandIntent : CommandIntent, IMovementTypeObject
     {
-        public MoveRightCommand(Person person)
+        public MoveRightCommandIntent(IGameObject gameObject)
         {
-            GameObject = person;
+            GameObject = gameObject;
             Direction = "Right";
             Animation = () => "WalkRight";
-            Condition = (key) => key is Key.D || (person.LastKey is Key.D && person.DirectionLatch);
+            Condition = (key) => key is Key.D || (gameObject.Command.LastKey is Key.D && gameObject.Command.DirectionLatch);
             Action = () => MoveRight();
         }
 
@@ -18,8 +18,8 @@ namespace RPGGame.Game
 
         public void MoveRight()
         {
-            GameObject.X += GameObject.MovementProgress;
-            GameObject.DeltaX += GameObject.MovementProgress;
+            GameObject.X += GameObject.Command.MovementProgress;
+            GameObject.DeltaX += GameObject.Command.MovementProgress;
         }
 
         public override IGameObject NextPosition()

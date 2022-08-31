@@ -5,10 +5,18 @@
         public CommandQueue()
         {
             KeysPressed = new Queue<Key>();
+            //CommandMap = new CommandKeyMap()
+            //    .AddMap(new KeyValuePair<Key, CommandIntent>(Key.W, new MoveUpCommandIntent(this)))
+            //    .AddMap(new KeyValuePair<Key, CommandIntent>(Key.S, new MoveDownCommandIntent(this)))
+            //    .AddMap(new KeyValuePair<Key, CommandIntent>(Key.A, new MoveLeftCommandIntent(this)))
+            //    .AddMap(new KeyValuePair<Key, CommandIntent>(Key.D, new MoveRightCommandIntent(this)))
+            //    .AddMap(new KeyValuePair<Key, CommandIntent>(Key.Default, new IdleCommandIntent(this)));
+
         }
 
         public Queue<Key> KeysPressed { get; private set; }
         public Key CurrentKey { get; private set; }
+        public CommandKeyMap CommandMap { get; set; }
 
         public void AddKey(string key)
         {

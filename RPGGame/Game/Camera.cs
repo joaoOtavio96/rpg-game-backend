@@ -5,28 +5,28 @@ namespace RPGGame.Game
 {
     public static class Camera
     {
-        public static void SetPositions(List<ICameraObject> cameraObjects)
+        public static void SetPositions(List<ObjectToProcess> objectToProccess)
         {
-            var mainSprite = cameraObjects.Single(c => c.Main);
-            var otherSprites = cameraObjects.Where(c => !c.Main);
+            var mainSprite = objectToProccess.Single(c => c.GameObject.Main);
+            var otherSprites = objectToProccess.Where(c => !c.GameObject.Main);
 
             foreach (var other in otherSprites)
             {
-                (other as IGameObject).CollisionBodies?.ForEach(b =>
+                other.GameObject.Collision.CollisionBodies?.ForEach(b =>
                 {
-                    b.RelativeX = b.X + mainSprite.DeltaX * (-1) + (GameConfig.CanvasWidth / 2);
-                    b.RelativeY = b.Y + mainSprite.DeltaY * (-1) + (GameConfig.CanvasHeight / 2);
+                    b.RelativeX = b.X + mainSprite.GameObject.DeltaX * (-1) + (GameConfig.CanvasWidth / 2);
+                    b.RelativeY = b.Y + mainSprite.GameObject.DeltaY * (-1) + (GameConfig.CanvasHeight / 2);
                 });
             }
 
             foreach (var other in otherSprites)
             {
-                other.RelativeX = other.X + mainSprite.DeltaX * (-1) + (GameConfig.CanvasWidth / 2);
-                other.RelativeY = other.Y + mainSprite.DeltaY * (-1) + (GameConfig.CanvasHeight / 2);
+                other.GameObject.RelativeX = other.GameObject.X + mainSprite.GameObject.DeltaX * (-1) + (GameConfig.CanvasWidth / 2);
+                other.GameObject.RelativeY = other.GameObject.Y + mainSprite.GameObject.DeltaY * (-1) + (GameConfig.CanvasHeight / 2);
             }
 
-            mainSprite.RelativeX = (GameConfig.CanvasWidth / 2);
-            mainSprite.RelativeY = (GameConfig.CanvasHeight / 2);
+            mainSprite.GameObject.RelativeX = (GameConfig.CanvasWidth / 2);
+            mainSprite.GameObject.RelativeY = (GameConfig.CanvasHeight / 2);
         }
     }
 }

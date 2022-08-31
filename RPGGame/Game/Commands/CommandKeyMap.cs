@@ -5,18 +5,18 @@ namespace RPGGame.Game
     {
         public CommandKeyMap()
         {
-            Map = new Dictionary<Key, Command>();
+            Map = new Dictionary<Key, CommandIntent>();
         }
-        public Dictionary<Key, Command> Map { get; private set; }
+        public Dictionary<Key, CommandIntent> Map { get; private set; }
 
-        public CommandKeyMap AddMap(KeyValuePair<Key, Command> map)
+        public CommandKeyMap AddMap(KeyValuePair<Key, CommandIntent> map)
         {
             Map.Add(map.Key, map.Value);
 
             return this;
         }
 
-        public Command GetCommand(Key key)
+        public CommandIntent GetCommand(Key key)
         {
             return Map.GetValueOrDefault(key);
         }

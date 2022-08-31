@@ -2,14 +2,14 @@
 
 namespace RPGGame.Game
 {
-    public class MoveDownCommand : Command, IMovementTypeObject
+    public class MoveDownCommandIntent : CommandIntent, IMovementTypeObject
     {
-        public MoveDownCommand(Person person)
+        public MoveDownCommandIntent(IGameObject gameObject)
         {
-            GameObject = person;
+            GameObject = gameObject;
             Direction = "Down";
             Animation = () => "WalkDown";
-            Condition = (key) => key is Key.S || (person.LastKey is Key.S && person.DirectionLatch);
+            Condition = (key) => key is Key.S || (gameObject.Command.LastKey is Key.S && gameObject.Command.DirectionLatch);
             Action = () => MoveDown() ;
         }
 
@@ -18,8 +18,8 @@ namespace RPGGame.Game
 
         public void MoveDown()
         {
-            GameObject.Y += GameObject.MovementProgress;
-            GameObject.DeltaY += GameObject.MovementProgress;
+            GameObject.Y += GameObject.Command.MovementProgress;
+            GameObject.DeltaY += GameObject.Command.MovementProgress;
         }
 
         public override IGameObject NextPosition()

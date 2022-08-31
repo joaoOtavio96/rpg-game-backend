@@ -1,4 +1,5 @@
 ﻿using RPGGame.Config;
+using RPGGame.Game.Commands;
 
 namespace RPGGame.Game
 {
@@ -16,22 +17,8 @@ namespace RPGGame.Game
         public double MaxY { get; }
         public string Name { get; set; }
         public Sprite Sprite { get; set; }
-
-        // Collision
-        public void AddCollisionBody(double x, double y);
-        public void UpdateColisionBody();
-        public List<CollisionBody> ObjectsWithCollision { get; set; }
-        public List<CollisionBody> CollisionBodies { get; set; }
-
-        // Command
-        public double MovementLimit { get; set; }
-        public double MovementProgress { get; set; }
-        public string LastDirection { get; set; }
-        public Key LastKey { get; set; }
-        public bool MovementCompleted => MovementLimit <= 0;
-        public CommandKeyMap CommandMap { get; set; }
-        void OnProccessing(Command command, Action completed);
-        public bool DirectionLatch { get; set; }
+        public Collision Collision { get; set; }
+        public Command Command { get; set; }
 
         // Camera
         public bool Main { get; set; }

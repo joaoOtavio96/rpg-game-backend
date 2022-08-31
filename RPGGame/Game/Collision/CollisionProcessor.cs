@@ -7,10 +7,13 @@ namespace RPGGame.Game
     {
         public static void Process(List<ObjectToProcess> objectsToProcess)
         {
-            objectsToProcess.ForEach(objectToProcess => objectToProcess.GameObject.UpdateColisionBody());
+            foreach (var movingObjects in objectsToProcess.Where(o => !o.GameObject.Collision.Static))
+            {
+                movingObjects.GameObject.Collision.UpdateColisionBodyPosition();
+            }               
 
             var combinations = objectsToProcess
-                    .SelectMany(o => o.GameObject.CollisionBodies)
+                    .SelectMany(o => o.GameObject.Collision.CollisionBodies)
                     .GetPermutations(2);
 
             foreach (var combination in combinations)
@@ -21,13 +24,13 @@ namespace RPGGame.Game
                 if (mainCombiationObject.Key == Key.Default)
                     continue;
 
-                var mainCommand = mainCombiationObject.GameObject.CommandMap.GetCommand(mainCombiationObject.Key);           
+                var mainCommand = mainCombiationObject.GameObject.Command.CommandMap.GetCommand(mainCombiationObject.Key);           
 
                 if (mainCommand.GameObject.IsCloseTo(secondaryCombination))
                 {
                     if(Intersect(mainCommand.NextPosition(), secondaryCombination))
                     {
-                        mainCombiationObject.GameObject.ObjectsWithCollision.Add(secondaryCombination);
+                        mainCombiationObject.GameObject.Collision.ObjectsWithCollision.Add(secondaryCombination);
                     }
                 }                   
             }
