@@ -10,14 +10,20 @@ namespace RPGGame.Game
     public class Game : IGame
     {
         private readonly CommandQueue _commands;
+        private readonly CollisionService _collisionService;
+        private readonly CommandService _commandService;
+        private readonly CameraService _cameraService;
         private NpcCommadQueue _npcCommands;
         private Person Hero, Npc;
         private Map Map;
         private object State;
 
-        public Game(CommandQueue commands)
+        public Game(CommandQueue commands, CollisionService collisionService, CommandService commandService, CameraService cameraService)
         {
             _commands = commands;
+            _collisionService = collisionService;
+            _commandService = commandService;
+            _cameraService = cameraService;
         }
 
         public void Init()
@@ -96,9 +102,9 @@ namespace RPGGame.Game
                 new ObjectToProcess(Map, Key.Default, () => { })
             };
 
-            CollisionService.CheckCollision(objectsToProcess);
-            CommandService.ExecuteCommand(objectsToProcess);
-            CameraService.SetPositions(objectsToProcess);
+            _collisionService.CheckCollision(objectsToProcess);
+            _commandService.ExecuteCommand(objectsToProcess);
+            _cameraService.SetPositions(objectsToProcess);
 
             State = new
             {
@@ -118,16 +124,15 @@ namespace RPGGame.Game
                     Sprite = gameObject.Sprite.Image,
                     X = gameObject.Position.RelativeX,
                     Y = gameObject.Position.RelativeY,
-                    MinX = gameObject.MinX,
-                    MinY = gameObject.MinY,
-                    MaxX = gameObject.MaxX,
-                    MaxY = gameObject.MaxY,
+                    MinX = gameObject.Bounds.MinX,
+                    MinY = gameObject.Bounds.MinY,
+                    MaxX = gameObject.Bounds.MaxX,
+                    MaxY = gameObject.Bounds.MaxY,
                     CollisionBodies = gameObject.Collision.CollisionBodies.Select(c => new CollisionBodyDto
                     {
                         Id = c.Id,
-                        HasCollision = c.HasCollision,
-                        RelativeX = c.RelativeX,
-                        RelativeY = c.RelativeY,
+                        RelativeX = c.Position.RelativeX,
+                        RelativeY = c.Position.RelativeY,
                     }).ToList()
                 };
 

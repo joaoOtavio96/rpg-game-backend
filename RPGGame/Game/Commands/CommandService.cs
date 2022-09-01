@@ -2,9 +2,9 @@
 
 namespace RPGGame.Game.Commands
 {
-    public static class CommandService
+    public class CommandService
     {
-        public static List<CommandIntent> ExecuteCommand(List<ObjectToProcess> objectsToProcess)
+        public List<CommandIntent> ExecuteCommand(List<ObjectToProcess> objectsToProcess)
         {
             var commandsProcessed = new List<CommandIntent>();
 

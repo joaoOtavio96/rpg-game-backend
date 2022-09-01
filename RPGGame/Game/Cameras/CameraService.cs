@@ -3,30 +3,24 @@ using RPGGame.Game.Commands;
 
 namespace RPGGame.Game.Cameras
 {
-    public static class CameraService
+    public class CameraService
     {
-        public static void SetPositions(List<ObjectToProcess> objectToProccess)
+        public void SetPositions(List<ObjectToProcess> objectToProccess)
         {
-            var mainSprite = objectToProccess.Single(c => c.GameObject.Camera.Main);
-            var otherSprites = objectToProccess.Where(c => !c.GameObject.Camera.Main);
+            var mainObject = objectToProccess.Single(c => c.GameObject.Camera.Main);
+            var secondaryObject = objectToProccess.Where(c => !c.GameObject.Camera.Main);
 
-            foreach (var other in otherSprites)
+            foreach (var collisionBody in secondaryObject.SelectMany(s => s.GameObject.Collision.CollisionBodies))
             {
-                other.GameObject.Collision.CollisionBodies?.ForEach(b =>
-                {
-                    b.RelativeX = b.X + mainSprite.GameObject.Position.DeltaX * -1 + GameConfig.CanvasWidth / 2;
-                    b.RelativeY = b.Y + mainSprite.GameObject.Position.DeltaY * -1 + GameConfig.CanvasHeight / 2;
-                });
+                collisionBody.Position.SetRelativePosition(mainObject.GameObject);
             }
 
-            foreach (var other in otherSprites)
+            foreach (var secondary in secondaryObject)
             {
-                other.GameObject.Position.RelativeX = other.GameObject.Position.X + mainSprite.GameObject.Position.DeltaX * -1 + GameConfig.CanvasWidth / 2;
-                other.GameObject.Position.RelativeY = other.GameObject.Position.Y + mainSprite.GameObject.Position.DeltaY * -1 + GameConfig.CanvasHeight / 2;
+                secondary.GameObject.Position.SetRelativePosition(mainObject.GameObject);
             }
 
-            mainSprite.GameObject.Position.RelativeX = GameConfig.CanvasWidth / 2;
-            mainSprite.GameObject.Position.RelativeY = GameConfig.CanvasHeight / 2;
+            mainObject.GameObject.Position.CenterRelativePosition();
         }
     }
 }

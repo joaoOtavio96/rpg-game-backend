@@ -3,9 +3,9 @@ using RPGGame.Infrastructure;
 
 namespace RPGGame.Game.Collisions
 {
-    public static class CollisionService
+    public class CollisionService
     {
-        public static void CheckCollision(List<ObjectToProcess> objectsToProcess)
+        public void CheckCollision(List<ObjectToProcess> objectsToProcess)
         {
             foreach (var movingObjects in objectsToProcess.Where(o => !o.GameObject.Collision.Static))
             {
@@ -36,10 +36,10 @@ namespace RPGGame.Game.Collisions
             }
         }
 
-        private static bool Intersect(IGameObject obj1, CollisionBody obj2)
+        private bool Intersect(IGameObject obj1, CollisionBody obj2)
         {
-            return obj1.MinX <= obj2.MaxX && obj1.MaxX >= obj2.MinX &&
-                    obj1.MinY <= obj2.MaxY && obj1.MaxY >= obj2.MinY;
+            return obj1.Bounds.MinX <= obj2.Bounds.MaxX && obj1.Bounds.MaxX >= obj2.Bounds.MinX &&
+                    obj1.Bounds.MinY <= obj2.Bounds.MaxY && obj1.Bounds.MaxY >= obj2.Bounds.MinY;
         }
     }
 }

@@ -29,15 +29,12 @@ namespace RPGGame.Game
             Sprite = new Sprite(path, width, height, gridWidth, gridHeight);
         }
 
-        public Sprite Sprite { get; set; }
         public string Name { get; set; }
-        public double MinX => Position.RelativeX + 10;
-        public double MaxX => MinX + MapConfig.GridSize - 7;
-        public double MinY => Position.RelativeY + 18 + (MapConfig.GridSize / 8);
-        public double MaxY => MinY + MapConfig.GridSize - 8;
+        public Sprite Sprite { get; set; }
         public Camera Camera { get; set; }
         public Collision Collision { get; set; }
         public Command Command { get; set; }
         public Position Position { get; set; }
+        public Bounds Bounds => new Bounds(Position.RelativeX, Position.RelativeY);
     }
 }

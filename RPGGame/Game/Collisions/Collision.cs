@@ -18,10 +18,13 @@ namespace RPGGame.Game.Collisions
             CollisionBodies.Add(new CollisionBody
             {
                 GameObject = _gameObject,
-                RelativeX = _gameObject.Position.RelativeX,
-                RelativeY = _gameObject.Position.RelativeY,
-                X = _gameObject.Position.X,
-                Y = _gameObject.Position.Y
+                Position = new Position
+                {
+                    RelativeX = _gameObject.Position.RelativeX,
+                    RelativeY = _gameObject.Position.RelativeY,
+                    X = _gameObject.Position.X,
+                    Y = _gameObject.Position.Y
+                }
             });
         }
 
@@ -30,8 +33,11 @@ namespace RPGGame.Game.Collisions
             var collisionBody = new CollisionBody
             {
                 GameObject = _gameObject,
-                X = MapConfig.ConvertToPixel(x) + MapConfig.ConvertToPixel(6) * -1 - MapConfig.GridSize / 2,
-                Y = MapConfig.ConvertToPixel(y) + MapConfig.ConvertToPixel(7) * -1 - MapConfig.GridSize / 8,
+                Position = new Position
+                {
+                    X = MapConfig.ConvertToPixel(x) + MapConfig.ConvertToPixel(6) * -1 - MapConfig.GridSize / 2,
+                    Y = MapConfig.ConvertToPixel(y) + MapConfig.ConvertToPixel(7) * -1 - MapConfig.GridSize / 8,
+                }            
             };
 
             CollisionBodies.Add(collisionBody);

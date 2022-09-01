@@ -1,4 +1,7 @@
 using RPGGame.Game;
+using RPGGame.Game.Cameras;
+using RPGGame.Game.Collisions;
+using RPGGame.Game.Commands;
 using RPGGame.HostedService;
 using RPGGame.Hubs;
 
@@ -11,6 +14,9 @@ builder.Services.AddSignalR();
 builder.Services.AddHostedService<GameHostedService>();
 builder.Services.AddSingleton<IGame, Game>();
 builder.Services.AddSingleton<CommandQueue>();
+builder.Services.AddSingleton<CollisionService>();
+builder.Services.AddSingleton<CommandService>();
+builder.Services.AddSingleton<CameraService>();
 builder.Services.AddCors(c => c.AddPolicy("allow", builder =>
 {
     builder
