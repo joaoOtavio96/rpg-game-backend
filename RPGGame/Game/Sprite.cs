@@ -1,4 +1,6 @@
-﻿namespace RPGGame.Game
+﻿using RPGGame.Game.Animations;
+
+namespace RPGGame.Game
 {
     public class Sprite
     {

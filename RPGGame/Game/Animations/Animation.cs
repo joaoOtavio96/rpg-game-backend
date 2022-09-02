@@ -1,18 +1,19 @@
 ﻿using RPGGame.Config;
+using RPGGame.Game.Animations.Frames;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
 
-namespace RPGGame.Game
+namespace RPGGame.Game.Animations
 {
     public class Animation
     {
         public Animation()
         {
             ResetFrame();
-            Animations = new Dictionary<string, List<Point>>();
+            Animations = new Dictionary<string, List<Frame>>();
         }
-        public Dictionary<string, List<Point>> Animations { get; set; }
+        public Dictionary<string, List<Frame>> Animations { get; set; }
         public int FrameLimit { get; private set; }
         public int CurrentFrame { get; private set; }
 
@@ -20,19 +21,19 @@ namespace RPGGame.Game
         {
             using (var memoryStream = new MemoryStream())
             using (var loadedImage = Image.Load(image))
-            {                          
+            {
                 var animationsFrame = Animations[name];
 
                 if (animationsFrame.Count <= CurrentFrame)
                     CurrentFrame = AnimationConfig.CurrentFrame;
 
                 var currentAnimationFrame = animationsFrame.ElementAtOrDefault(CurrentFrame);
-                var pointToCrop = new Point((currentAnimationFrame.X * height), (currentAnimationFrame.Y * width));
+                var pointToCrop = new Point(currentAnimationFrame.X * height, currentAnimationFrame.Y * width);
 
-                loadedImage.Clone(ctx => 
+                loadedImage.Clone(ctx =>
                     ctx.Crop(new Rectangle(pointToCrop, new Size(width, height))))
                        .Save(memoryStream, new PngEncoder()
-                );             
+                );
 
                 FrameLimit -= 1;
 
@@ -46,9 +47,9 @@ namespace RPGGame.Game
             }
         }
 
-        public Animation AddAnimation(string name, List<Point> positions)
+        public Animation AddAnimation(string name, params Frame[] positions)
         {
-            Animations.Add(name, positions);
+            Animations.Add(name, positions.ToList());
 
             return this;
         }

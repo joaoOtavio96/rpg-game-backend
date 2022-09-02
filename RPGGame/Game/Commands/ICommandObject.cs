@@ -1,9 +1,11 @@
-﻿namespace RPGGame.Game
+﻿using RPGGame.Game.Commands.Intents;
+
+namespace RPGGame.Game
 {
     public interface ICommandObject
     {
         public CommandKeyMap CommandMap { get; set; }
-        void OnProccessing(Command command, Action completed);
+        void OnProccessing(CommandIntent command, Action completed);
         public bool DirectionLatch { get; set; }
     }
 }
