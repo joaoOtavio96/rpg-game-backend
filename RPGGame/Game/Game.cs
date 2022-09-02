@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using RPGGame.Config;
 using RPGGame.Game.Animations;
+using RPGGame.Game.Animations.Frames;
 using RPGGame.Game.Cameras;
 using RPGGame.Game.Collisions;
 using RPGGame.Game.Commands;
@@ -71,18 +72,18 @@ namespace RPGGame.Game
             Hero = new Person("Hero", @"Assets\characters\people\hero.png", 6, 7, 128, 128, 32, 32);
             Hero.Camera.Main = true;
             Hero.Sprite.Animation = new Animation()
-                .AddAnimation("IdleUp", new List<Point> { new Point(0, 2) })
-                .AddAnimation("IdleDown", new List<Point> { new Point(0, 0) })
-                .AddAnimation("IdleLeft", new List<Point> { new Point(0, 3) })
-                .AddAnimation("IdleRight", new List<Point> { new Point(0, 1) })
-                .AddAnimation("WalkUp", new List<Point> { new Point(0, 2), new Point(1, 2), new Point(2, 2), new Point(3, 2) })
-                .AddAnimation("WalkDown", new List<Point> { new Point(0, 0), new Point(1, 0), new Point(2, 0), new Point(3, 0) })
-                .AddAnimation("WalkLeft", new List<Point> { new Point(0, 3), new Point(1, 3), new Point(2, 3), new Point(3, 3) })
-                .AddAnimation("WalkRight", new List<Point> { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1) });
+                .AddAnimation("IdleUp", new IdleUpFrame())
+                .AddAnimation("IdleDown", new IdleDownFrame())
+                .AddAnimation("IdleLeft", new IdleLeftFrame())
+                .AddAnimation("IdleRight", new IdleRightFrame())
+                .AddAnimation("WalkUp", new WalkUpFisrtFrame(), new WalkUpSecondFrame(), new WalkUpThirdFrame(), new WalkUpFourthFrame())
+                .AddAnimation("WalkDown", new WalkDownFisrtFrame(), new WalkDownSecondFrame(), new WalkDownThirdFrame(), new WalkDownFourthFrame())
+                .AddAnimation("WalkLeft", new WalkLeftFisrtFrame(), new WalkLeftSecondFrame(), new WalkLeftThirdFrame(), new WalkLeftFourthFrame())
+                .AddAnimation("WalkRight", new WalkRightFisrtFrame(), new WalkRightSecondFrame(), new WalkRightThirdFrame(), new WalkRightFourthFrame());
 
             Npc = new Person("Npc", @"Assets\characters\people\npc1.png", 7, 9, 128, 128, 32, 32);
             Npc.Sprite.Animation = new Animation()
-                .AddAnimation("IdleDown", new List<Point> { new Point(0, 0) });
+                .AddAnimation("IdleDown", new IdleDownFrame());
         }
 
         public void Update(double deltaTime)

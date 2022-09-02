@@ -1,4 +1,5 @@
 ﻿using RPGGame.Config;
+using RPGGame.Game.Animations.Frames;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
@@ -10,9 +11,9 @@ namespace RPGGame.Game.Animations
         public Animation()
         {
             ResetFrame();
-            Animations = new Dictionary<string, List<Point>>();
+            Animations = new Dictionary<string, List<Frame>>();
         }
-        public Dictionary<string, List<Point>> Animations { get; set; }
+        public Dictionary<string, List<Frame>> Animations { get; set; }
         public int FrameLimit { get; private set; }
         public int CurrentFrame { get; private set; }
 
@@ -46,9 +47,9 @@ namespace RPGGame.Game.Animations
             }
         }
 
-        public Animation AddAnimation(string name, List<Point> positions)
+        public Animation AddAnimation(string name, params Frame[] positions)
         {
-            Animations.Add(name, positions);
+            Animations.Add(name, positions.ToList());
 
             return this;
         }
