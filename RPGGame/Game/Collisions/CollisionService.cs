@@ -5,6 +5,13 @@ namespace RPGGame.Game.Collisions
 {
     public class CollisionService
     {
+        private readonly MainCommandQueue _commandQueue;
+
+        public CollisionService(MainCommandQueue commandQueue)
+        {
+            _commandQueue = commandQueue;
+        }
+
         public void CheckCollision(List<ObjectToProcess> objectsToProcess)
         {
             foreach (var movingObjects in objectsToProcess.Where(o => !o.GameObject.Collision.Static))
@@ -16,21 +23,46 @@ namespace RPGGame.Game.Collisions
                     .SelectMany(o => o.GameObject.Collision.CollisionBodies)
                     .GetPermutations(2);
 
-            foreach (var combination in combinations)
+            foreach (var combination in combinations.Where(c => !c.First().GameObject.Collision.Static))
             {
                 var mainCombiationObject = objectsToProcess.FirstOrDefault(o => o.GameObject == combination.First().GameObject);
                 var secondaryCombination = combination.Last();
 
-                if (mainCombiationObject.Key == Key.Default)
-                    continue;
-
-                var mainCommand = mainCombiationObject.GameObject.Command.CommandMap.GetCommand(mainCombiationObject.Key);
+                var mainCommand = _commandQueue.GetCommand(mainCombiationObject.GameObject);
 
                 if (mainCommand.GameObject.IsCloseTo(secondaryCombination))
                 {
                     if (Intersect(mainCommand.NextPosition(), secondaryCombination))
                     {
                         mainCombiationObject.GameObject.Collision.ObjectsWithCollision.Add(secondaryCombination);
+                    }
+                }
+            }
+        }
+
+        public void CheckCollision(List<IGameObject> objectsToProcess)
+        {
+            foreach (var movingObjects in objectsToProcess.Where(o => !o.Collision.Static))
+            {
+                movingObjects.Collision.UpdateColisionBodyPosition();
+            }
+
+            var combinations = objectsToProcess
+                    .SelectMany(o => o.Collision.CollisionBodies)
+                    .GetPermutations(2);
+
+            foreach (var combination in combinations.Where(c => !c.First().GameObject.Collision.Static))
+            {
+                var mainCombiationObject = objectsToProcess.FirstOrDefault(o => o == combination.First().GameObject);
+                var secondaryCombination = combination.Last();
+
+                var mainCommand = _commandQueue.GetCommand(mainCombiationObject);
+
+                if (mainCommand.GameObject.IsCloseTo(secondaryCombination))
+                {
+                    if (Intersect(mainCommand.NextPosition(), secondaryCombination))
+                    {
+                        mainCombiationObject.Collision.ObjectsWithCollision.Add(secondaryCombination);
                     }
                 }
             }

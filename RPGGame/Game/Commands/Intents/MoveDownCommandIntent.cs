@@ -1,6 +1,6 @@
 ﻿using RPGGame.Config;
 
-namespace RPGGame.Game
+namespace RPGGame.Game.Commands.Intents
 {
     public class MoveDownCommandIntent : CommandIntent, IMovementTypeObject
     {
@@ -9,8 +9,8 @@ namespace RPGGame.Game
             GameObject = gameObject;
             Direction = "Down";
             Animation = () => "WalkDown";
-            Condition = (key) => key is Key.S || (gameObject.Command.LastKey is Key.S && gameObject.Command.DirectionLatch);
-            Action = () => MoveDown() ;
+            Condition = (key) => key is Key.S || gameObject.Command.LastKey is Key.S && gameObject.Command.DirectionLatch;
+            Action = () => MoveDown();
         }
 
         public string Direction { get; set; }
@@ -24,13 +24,13 @@ namespace RPGGame.Game
 
         public override IGameObject NextPosition()
         {
-            return new Person 
-            { 
+            return new Person
+            {
                 Position = new Position()
                 {
                     RelativeX = GameObject.Position.RelativeX,
                     RelativeY = GameObject.Position.RelativeY + MapConfig.GridSize
-                }               
+                }
             };
         }
     }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Options;
+using RPGGame.Config;
 using RPGGame.Game;
 using RPGGame.Hubs;
 using RPGGame.Infrastructure;

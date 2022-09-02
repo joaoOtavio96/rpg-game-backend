@@ -1,4 +1,6 @@
-﻿namespace RPGGame.Game
+﻿using RPGGame.Game.Commands.Intents;
+
+namespace RPGGame.Game
 {
     public interface ICommandObject
     {

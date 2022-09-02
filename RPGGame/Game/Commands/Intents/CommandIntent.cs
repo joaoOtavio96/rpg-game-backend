@@ -1,4 +1,4 @@
-﻿namespace RPGGame.Game
+﻿namespace RPGGame.Game.Commands.Intents
 {
     public abstract class CommandIntent
     {

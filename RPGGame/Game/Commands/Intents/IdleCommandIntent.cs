@@ -1,4 +1,4 @@
-﻿namespace RPGGame.Game.Commands
+﻿namespace RPGGame.Game.Commands.Intents
 {
     public class IdleCommandIntent : CommandIntent, IMovementTypeObject
     {
@@ -6,7 +6,7 @@
         {
             GameObject = gameObject;
             Animation = () => $"Idle{gameObject.Command.LastDirection}";
-            Condition = (key) => key is Key.Default && !string.IsNullOrWhiteSpace(gameObject.Command.LastDirection) && !gameObject.Command.DirectionLatch;
+            Condition = (key) => gameObject.Command != null && key is Key.Default && !string.IsNullOrWhiteSpace(gameObject.Command.LastDirection) && !gameObject.Command.DirectionLatch;
             Action = () => { };
         }
 
@@ -17,10 +17,10 @@
         {
             return new Person
             {
-                Position = new Position 
-                { 
-                    RelativeX = GameObject.Position.RelativeX, 
-                    RelativeY = GameObject.Position.RelativeY 
+                Position = new Position
+                {
+                    RelativeX = GameObject.Position.RelativeX,
+                    RelativeY = GameObject.Position.RelativeY
                 }
             };
         }

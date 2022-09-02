@@ -1,4 +1,6 @@
-﻿using RPGGame.Config;
+﻿using Microsoft.Extensions.Options;
+using RPGGame.Config;
+using RPGGame.Game.Animations;
 using RPGGame.Game.Cameras;
 using RPGGame.Game.Collisions;
 using RPGGame.Game.Commands;
@@ -9,21 +11,20 @@ namespace RPGGame.Game
 {
     public class Game : IGame
     {
-        private readonly CommandQueue _commands;
+        private readonly MainCommandQueue _commands;
         private readonly CollisionService _collisionService;
         private readonly CommandService _commandService;
         private readonly CameraService _cameraService;
-        private NpcCommadQueue _npcCommands;
         private Person Hero, Npc;
         private Map Map;
         private object State;
 
-        public Game(CommandQueue commands, CollisionService collisionService, CommandService commandService, CameraService cameraService)
+        public Game(MainCommandQueue commands, CollisionService collisionService, CommandService commandService, CameraService cameraService)
         {
             _commands = commands;
             _collisionService = collisionService;
             _commandService = commandService;
-            _cameraService = cameraService;
+            _cameraService = cameraService;           
         }
 
         public void Init()
@@ -81,30 +82,16 @@ namespace RPGGame.Game
 
             Npc = new Person("Npc", @"Assets\characters\people\npc1.png", 7, 9, 128, 128, 32, 32);
             Npc.Sprite.Animation = new Animation()
-                .AddAnimation("IdleUp", new List<Point> { new Point(0, 2) })
-                .AddAnimation("IdleDown", new List<Point> { new Point(0, 0) })
-                .AddAnimation("IdleLeft", new List<Point> { new Point(0, 3) })
-                .AddAnimation("IdleRight", new List<Point> { new Point(0, 1) })
-                .AddAnimation("WalkUp", new List<Point> { new Point(0, 2), new Point(1, 2), new Point(2, 2), new Point(3, 2) })
-                .AddAnimation("WalkDown", new List<Point> { new Point(0, 0), new Point(1, 0), new Point(2, 0), new Point(3, 0) })
-                .AddAnimation("WalkLeft", new List<Point> { new Point(0, 3), new Point(1, 3), new Point(2, 3), new Point(3, 3) })
-                .AddAnimation("WalkRight", new List<Point> { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1) });
-
-            _npcCommands = new NpcCommadQueue(new List<Key> { Key.Default });
+                .AddAnimation("IdleDown", new List<Point> { new Point(0, 0) });
         }
 
         public void Update(double deltaTime)
         {
-            var objectsToProcess = new List<ObjectToProcess>()
-            {
-                new ObjectToProcess(Hero, _commands.CurrentKey, () => _commands.GetKey()),
-                new ObjectToProcess(Npc, (Key)_npcCommands.Current, () => _npcCommands.MoveNext()),
-                new ObjectToProcess(Map, Key.Default, () => { })
-            };
+            var gameObjects = new List<IGameObject> { Hero, Npc, Map };
 
-            _collisionService.CheckCollision(objectsToProcess);
-            _commandService.ExecuteCommand(objectsToProcess);
-            _cameraService.SetPositions(objectsToProcess);
+            _collisionService.CheckCollision(gameObjects);
+            _commandService.ExecuteCommand(gameObjects, () => _commands.GetKey());
+            _cameraService.SetPositions(gameObjects);
 
             State = new
             {

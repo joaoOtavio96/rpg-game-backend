@@ -1,4 +1,5 @@
 ﻿using RPGGame.Config;
+using RPGGame.Game.Commands.Intents;
 
 namespace RPGGame.Game.Commands
 {
@@ -13,13 +14,6 @@ namespace RPGGame.Game.Commands
             DirectionLatch = false;
             MovementProgress = MovementConfig.MovementProgress;
             MovementLimit = MovementConfig.MovementLimit;
-            CommandMap = new CommandKeyMap()
-                .AddMap(new KeyValuePair<Key, CommandIntent>(Key.W, new MoveUpCommandIntent(gameObject)))
-                .AddMap(new KeyValuePair<Key, CommandIntent>(Key.S, new MoveDownCommandIntent(gameObject)))
-                .AddMap(new KeyValuePair<Key, CommandIntent>(Key.A, new MoveLeftCommandIntent(gameObject)))
-                .AddMap(new KeyValuePair<Key, CommandIntent>(Key.D, new MoveRightCommandIntent(gameObject)))
-                .AddMap(new KeyValuePair<Key, CommandIntent>(Key.Default, new IdleCommandIntent(gameObject)));
-
         }
 
         public double MovementLimit { get; set; }
@@ -27,16 +21,17 @@ namespace RPGGame.Game.Commands
         public string LastDirection { get; set; }
         public Key LastKey { get; set; }
         public bool MovementCompleted => MovementLimit <= 0;
-        public CommandKeyMap CommandMap { get; set; }
         public bool DirectionLatch { get; set; }
 
         public virtual void OnProccessing(CommandIntent command, Action completed)
         {
             var movement = command as IMovementTypeObject;
-            if (MovementCompleted)
+             if (MovementCompleted)
             {
                 StopMovement();
-                completed();
+
+                if(command.GameObject.Camera.Main)
+                    completed();
             }
 
             if (!string.IsNullOrWhiteSpace(movement.Direction))

@@ -22,5 +22,23 @@ namespace RPGGame.Game.Cameras
 
             mainObject.GameObject.Position.CenterRelativePosition();
         }
+
+        public void SetPositions(List<IGameObject> objectToProccess)
+        {
+            var mainObject = objectToProccess.Single(c => c.Camera.Main);
+            var secondaryObject = objectToProccess.Where(c => !c.Camera.Main);
+
+            foreach (var collisionBody in secondaryObject.SelectMany(s => s.Collision.CollisionBodies))
+            {
+                collisionBody.Position.SetRelativePosition(mainObject);
+            }
+
+            foreach (var secondary in secondaryObject)
+            {
+                secondary.Position.SetRelativePosition(mainObject);
+            }
+
+            mainObject.Position.CenterRelativePosition();
+        }
     }
 }

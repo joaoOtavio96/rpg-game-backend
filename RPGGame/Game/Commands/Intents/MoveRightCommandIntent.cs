@@ -1,6 +1,6 @@
 ﻿using RPGGame.Config;
 
-namespace RPGGame.Game
+namespace RPGGame.Game.Commands.Intents
 {
     public class MoveRightCommandIntent : CommandIntent, IMovementTypeObject
     {
@@ -9,7 +9,7 @@ namespace RPGGame.Game
             GameObject = gameObject;
             Direction = "Right";
             Animation = () => "WalkRight";
-            Condition = (key) => key is Key.D || (gameObject.Command.LastKey is Key.D && gameObject.Command.DirectionLatch);
+            Condition = (key) => key is Key.D || gameObject.Command.LastKey is Key.D && gameObject.Command.DirectionLatch;
             Action = () => MoveRight();
         }
 
@@ -24,8 +24,8 @@ namespace RPGGame.Game
 
         public override IGameObject NextPosition()
         {
-            return new Person 
-            { 
+            return new Person
+            {
                 Position = new Position
                 {
                     RelativeY = GameObject.Position.RelativeY,
