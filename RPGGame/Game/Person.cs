@@ -29,6 +29,24 @@ namespace RPGGame.Game
             Sprite = new Sprite(path, width, height, gridWidth, gridHeight);
         }
 
+        public Person(string name, double x, double y)
+        {
+
+            var calculatedX = MapConfig.ConvertToPixel(x) + MapConfig.ConvertToPixel(6) * (-1) - (MapConfig.GridSize / 2);
+            var calculatedY = MapConfig.ConvertToPixel(y) + MapConfig.ConvertToPixel(7) * (-1) - (MapConfig.GridSize / 8);
+            Name = name;
+            Position = new Position
+            {
+                DeltaX = calculatedX,
+                DeltaY = calculatedY,
+                X = calculatedX,
+                Y = calculatedY
+            };
+            Collision = new Collision(this);
+            Command = new Command(this);
+            Camera = new Camera(this);
+        }
+
         public string Name { get; set; }
         public Sprite Sprite { get; set; }
         public Camera Camera { get; set; }

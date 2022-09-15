@@ -1,0 +1,18 @@
+﻿{
+  "Name": "Npc",
+  "InitialX": 7,
+  "InitialY": 9,
+  "Sprite": {
+    "Path": "Assets\\characters\\people\\npc1.png",
+    "Width": 128,
+    "Height": 128,
+    "GridWidth": 32,
+    "GridHeight": 32
+  },
+  "Animations": [
+    {
+      "Name": "IdleDown",
+      "Frames": [ "IdleDownFrame" ]
+    }
+  ]
+}

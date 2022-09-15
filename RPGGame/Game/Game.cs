@@ -5,8 +5,10 @@ using RPGGame.Game.Animations.Frames;
 using RPGGame.Game.Cameras;
 using RPGGame.Game.Collisions;
 using RPGGame.Game.Commands;
+using RPGGame.Game.Config;
 using RPGGame.Infrastructure;
 using SixLabors.ImageSharp;
+using System.Text.Json;
 
 namespace RPGGame.Game
 {
@@ -30,60 +32,14 @@ namespace RPGGame.Game
 
         public void Init()
         {
-            Map = new Map("Map", @"Assets\maps\DemoLower.png", 192, 192, 16, 16);
-            Map.Collision.AddCollisionBody(1, 3);
-            Map.Collision.AddCollisionBody(2, 3);
-            Map.Collision.AddCollisionBody(3, 3);
-            Map.Collision.AddCollisionBody(4, 3);
-            Map.Collision.AddCollisionBody(5, 3);
-            Map.Collision.AddCollisionBody(6, 4); 
-            Map.Collision.AddCollisionBody(7, 3);
-            Map.Collision.AddCollisionBody(8, 4);
-            Map.Collision.AddCollisionBody(9, 3);
-            Map.Collision.AddCollisionBody(10, 3);
-            Map.Collision.AddCollisionBody(11, 4);
-            Map.Collision.AddCollisionBody(11, 5);
-            Map.Collision.AddCollisionBody(11, 6);
-            Map.Collision.AddCollisionBody(11, 7);
-            Map.Collision.AddCollisionBody(11, 8);
-            Map.Collision.AddCollisionBody(11, 9);
-            Map.Collision.AddCollisionBody(10, 10);
-            Map.Collision.AddCollisionBody(9, 10);
-            Map.Collision.AddCollisionBody(8, 10);
-            Map.Collision.AddCollisionBody(7, 10);
-            Map.Collision.AddCollisionBody(6, 10);
-            Map.Collision.AddCollisionBody(5, 11);
-            Map.Collision.AddCollisionBody(4, 10);
-            Map.Collision.AddCollisionBody(3, 10);
-            Map.Collision.AddCollisionBody(2, 10);
-            Map.Collision.AddCollisionBody(1, 10);
-            Map.Collision.AddCollisionBody(0, 9);
-            Map.Collision.AddCollisionBody(0, 8);
-            Map.Collision.AddCollisionBody(0, 7);
-            Map.Collision.AddCollisionBody(0, 6);
-            Map.Collision.AddCollisionBody(0, 5);
-            Map.Collision.AddCollisionBody(0, 4);
-            Map.Collision.AddCollisionBody(0, 3);
-            Map.Collision.AddCollisionBody(7, 6);
-            Map.Collision.AddCollisionBody(8, 6);
-            Map.Collision.AddCollisionBody(7, 7);
-            Map.Collision.AddCollisionBody(8, 7);
+            Map = new GameObjectBuilder(@"Assets\config\MapGameObjectConfig.json")
+                .Build<Map>();
 
-            Hero = new Person("Hero", @"Assets\characters\people\hero.png", 6, 7, 128, 128, 32, 32);
-            Hero.Camera.Main = true;
-            Hero.Sprite.Animation = new Animation()
-                .AddAnimation("IdleUp", new IdleUpFrame())
-                .AddAnimation("IdleDown", new IdleDownFrame())
-                .AddAnimation("IdleLeft", new IdleLeftFrame())
-                .AddAnimation("IdleRight", new IdleRightFrame())
-                .AddAnimation("WalkUp", new WalkUpFisrtFrame(), new WalkUpSecondFrame(), new WalkUpThirdFrame(), new WalkUpFourthFrame())
-                .AddAnimation("WalkDown", new WalkDownFisrtFrame(), new WalkDownSecondFrame(), new WalkDownThirdFrame(), new WalkDownFourthFrame())
-                .AddAnimation("WalkLeft", new WalkLeftFisrtFrame(), new WalkLeftSecondFrame(), new WalkLeftThirdFrame(), new WalkLeftFourthFrame())
-                .AddAnimation("WalkRight", new WalkRightFisrtFrame(), new WalkRightSecondFrame(), new WalkRightThirdFrame(), new WalkRightFourthFrame());
+            Hero = new GameObjectBuilder(@"Assets\config\HeroGameObjectConfig.json")
+                .Build<Person>(o => o.Camera.Main = true);
 
-            Npc = new Person("Npc", @"Assets\characters\people\npc1.png", 7, 9, 128, 128, 32, 32);
-            Npc.Sprite.Animation = new Animation()
-                .AddAnimation("IdleDown", new IdleDownFrame());
+            Npc = new GameObjectBuilder(@"Assets\config\NpcGameObjectConfig.json")
+                .Build<Person>();
         }
 
         public void Update(double deltaTime)

@@ -1,0 +1,47 @@
+﻿{
+  "Name": "Hero",
+  "InitialX": 6,
+  "InitialY": 7,
+  "Sprite": {
+    "Path": "Assets\\characters\\people\\hero.png",
+    "Width": 128,
+    "Height": 128,
+    "GridWidth": 32,
+    "GridHeight": 32
+  },
+  "Animations": [
+    {
+      "Name": "IdleUp",
+      "Frames": [ "IdleUpFrame" ]
+    },
+    {
+      "Name": "IdleDown",
+      "Frames": [ "IdleDownFrame" ]
+    },
+    {
+      "Name": "IdleLeft",
+      "Frames": [ "IdleLeftFrame" ]
+    },
+    {
+      "Name": "IdleRight",
+      "Frames": [ "IdleRightFrame" ]
+    },
+    {
+      "Name": "WalkUp",
+      "Frames": [ "WalkUpFisrtFrame", "WalkUpSecondFrame", "WalkUpThirdFrame", "WalkUpFourthFrame" ]
+    },
+    {
+      "Name": "WalkDown",
+      "Frames": [ "WalkDownFisrtFrame", "WalkDownSecondFrame", "WalkDownThirdFrame", "WalkDownFourthFrame" ]
+    },
+    {
+      "Name": "WalkLeft",
+      "Frames": [ "WalkLeftFisrtFrame", "WalkLeftSecondFrame", "WalkLeftThirdFrame", "WalkLeftFourthFrame" ]
+    },
+    {
+      "Name": "WalkRight",
+      "Frames": [ "WalkRightFisrtFrame", "WalkRightSecondFrame", "WalkRightThirdFrame", "WalkRightFourthFrame" ]
+    }
+  ]
+}
+

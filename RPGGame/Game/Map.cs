@@ -21,6 +21,17 @@ namespace RPGGame.Game
             Camera = new Camera(this);
         }
 
+        public Map(string name, int width, int height)
+        {
+            Name = name;
+            Position = new Position
+            {
+                X = (width / 2) * (-1),
+                Y = (height / 2) * (-1),
+            };
+            Camera = new Camera(this);
+        }
+
         public string Name { get; set; }
         public Sprite Sprite { get; set; }
         public Collision Collision { get; set; }
